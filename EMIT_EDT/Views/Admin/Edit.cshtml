@@ -1,0 +1,31 @@
+﻿@model EMIT_EDT.Models.Admin
+@{
+    ViewData["Title"] = "Modifier un administrateur";
+}
+
+<h2>Modifier l'administrateur</h2>
+<hr />
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label asp-for="Nom" class="form-label">Nom</label>
+            <input asp-for="Nom" class="form-control" required />
+        </div>
+        <div class="col-md-6 mb-3">
+            <label asp-for="Email" class="form-label">Email</label>
+            <input asp-for="Email" type="email" class="form-control" required />
+        </div>
+        <div class="col-md-6 mb-3">
+            <label asp-for="Pwd" class="form-label">Mot de passe</label>
+            <input asp-for="Pwd" type="password" class="form-control" required />
+        </div>
+        <div class="col-md-6 mb-3">
+            <label asp-for="Fonction" class="form-label">Fonction</label>
+            <input asp-for="Fonction" class="form-control" />
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Enregistrer</button>
+    <a asp-action="Index" class="btn btn-secondary">Annuler</a>
+</form>

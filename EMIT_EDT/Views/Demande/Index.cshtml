@@ -1,0 +1,62 @@
+﻿@model List<EMIT_EDT.Models.Demande>
+@{
+    ViewData["Title"] = "Demandes de salle";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="fas fa-clipboard-list"></i> Demandes de salle</h2>
+    <a asp-action="Create" class="btn btn-primary"><i class="fas fa-plus"></i> Nouvelle demande</a>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <table class="table table-striped table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>Étudiant</th>
+                    <th>Salle</th>
+                    <th>Début</th>
+                    <th>Fin</th>
+                    <th>Type</th>
+                    <th>Statut</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var d in Model)
+                {
+                    <tr>
+                        <td>@d.Etudiant?.Nom @d.Etudiant?.Prenom</td>
+                        <td>@d.Salle?.Code</td>
+                        <td>@d.DureDebut.ToString("dd/MM/yyyy HH:mm")</td>
+                        <td>@d.DureFin.ToString("dd/MM/yyyy HH:mm")</td>
+                        <td>@d.TypeDemande</td>
+                        <td>
+                            @if (d.Traitements != null && d.Traitements.Any())
+                            {
+                                <span class="badge bg-success">Traitée</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-warning text-dark">En attente</span>
+                            }
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@d.Id" class="btn btn-sm btn-warning" title="Modifier">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@d.Id" class="btn btn-sm btn-danger" title="Supprimer"
+                               onclick="return confirm('Supprimer cette demande ?')">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        @if (!Model.Any())
+        {
+            <p class="text-center text-muted">Aucune demande enregistrée.</p>
+        }
+    </div>
+</div>

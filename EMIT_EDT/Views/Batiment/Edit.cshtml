@@ -1,0 +1,30 @@
+﻿@model EMIT_EDT.Models.Batiment
+@{
+    ViewData["Title"] = "Modifier un bâtiment";
+}
+
+<h2><i class="fas fa-edit"></i> Modifier le bâtiment</h2>
+<hr />
+
+<form asp-action="Edit" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <input type="hidden" asp-for="BatimentId" />
+
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <label asp-for="Nom" class="form-label">Nom</label>
+            <input asp-for="Nom" class="form-control" required />
+        </div>
+        <div class="col-md-4 mb-3">
+            <label asp-for="NombreEtages" class="form-label">Nombre d'étages</label>
+            <input asp-for="NombreEtages" type="number" class="form-control" min="1" max="10" required />
+        </div>
+        <div class="col-md-4 mb-3">
+            <label asp-for="Localisation" class="form-label">Localisation</label>
+            <input asp-for="Localisation" class="form-control" />
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Enregistrer</button>
+    <a asp-action="Index" class="btn btn-secondary">Annuler</a>
+</form>

@@ -1,0 +1,94 @@
+﻿@page
+@using Microsoft.AspNetCore.Identity
+@using EMIT_EDT.Models
+@inject SignInManager<Utilisateur> SignInManager
+@inject UserManager<Utilisateur> UserManager
+@{
+    ViewData["Title"] = "Connexion";
+}
+<div class="login-premium-wrapper">
+    <div class="bg-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+        <div class="shape shape-4"></div>
+    </div>
+
+    <div class="login-premium-card">
+        <div class="card-inner">
+            <div class="login-header">
+                <div class="login-logo">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <h1>E.M.I.T.</h1>
+                <p class="slogan">Plateforme numérique de gestion universitaire</p>
+            </div>
+
+            <form method="post" class="login-form">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="returnUrl" value="@Request.Query["ReturnUrl"]" />
+
+                <div asp-validation-summary="All" class="text-danger small mb-3"></div>
+
+                <div class="input-group-premium">
+                    <span class="input-icon"><i class="fas fa-envelope"></i></span>
+                    <input name="email" type="email" class="form-control-premium" required placeholder="Adresse e-mail" />
+                </div>
+
+                <div class="input-group-premium">
+                    <span class="input-icon"><i class="fas fa-lock"></i></span>
+                    <input name="password" type="password" class="form-control-premium" required placeholder="Mot de passe" />
+                </div>
+
+                <div class="form-options">
+                    <label class="checkbox-container">
+                        <input type="checkbox" name="remember" />
+                        <span class="checkmark"></span>
+                        Se souvenir de moi
+                    </label>
+                    <a href="#" class="forgot-link">Mot de passe oublié ?</a>
+                </div>
+
+                <button type="submit" class="btn-login-premium">
+                    <span>Se connecter à la plateforme</span>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+
+                <div class="login-footer-links">
+                    <a asp-page="./Register" class="premium-link">Créer un compte étudiant</a>
+                    <span class="divider">|</span>
+                    <a href="#" class="premium-link">Connexion administrateur</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="login-footer-premium">
+        <p>© 2026 E.M.I.T. – Université de Fianarantsoa</p>
+        <p class="address">Route de Masoabe, 3km de la gare routière | contact@emit.mg | +261 20 75 508 01</p>
+    </div>
+</div>
+
+@functions {
+    public async Task<IActionResult> OnPostAsync(string email, string password, string? returnUrl)
+    {
+        if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
+        {
+            ModelState.AddModelError(string.Empty, "Veuillez remplir tous les champs.");
+            return Page();
+        }
+
+        var user = await UserManager.FindByEmailAsync(email);
+        if (user != null)
+        {
+            var result = await SignInManager.PasswordSignInAsync(user.UserName!, password, isPersistent: false, lockoutOnFailure: false);
+            if (result.Succeeded)
+            {
+                if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+                    return LocalRedirect(returnUrl);
+                return LocalRedirect("/");
+            }
+        }
+        ModelState.AddModelError(string.Empty, "Email ou mot de passe incorrect.");
+        return Page();
+    }
+}

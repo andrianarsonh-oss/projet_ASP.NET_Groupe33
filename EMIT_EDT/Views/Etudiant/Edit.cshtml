@@ -1,0 +1,51 @@
+﻿@model EMIT_EDT.Models.Etudiant
+@{
+    ViewData["Title"] = "Modifier un étudiant";
+}
+
+<h2>Modifier l'étudiant</h2>
+<hr />
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label asp-for="Matricule" class="form-label">Matricule</label>
+            <input asp-for="Matricule" class="form-control" required />
+        </div>
+        <div class="col-md-6 mb-3">
+            <label asp-for="Nom" class="form-label">Nom</label>
+            <input asp-for="Nom" class="form-control" required />
+        </div>
+        <div class="col-md-6 mb-3">
+            <label asp-for="Prenom" class="form-label">Prénom</label>
+            <input asp-for="Prenom" class="form-control" required />
+        </div>
+        <div class="col-md-6 mb-3">
+            <label asp-for="Email" class="form-label">Email</label>
+            <input asp-for="Email" type="email" class="form-control" required />
+        </div>
+        <div class="col-md-6 mb-3">
+            <label asp-for="NumCin" class="form-label">N° CIN</label>
+            <input asp-for="NumCin" class="form-control" />
+        </div>
+        <div class="col-md-3 mb-3">
+            <label asp-for="StatutValide" class="form-label">Statut</label>
+            <select asp-for="StatutValide" class="form-select">
+                <option value="true">Actif</option>
+                <option value="false">Inactif</option>
+            </select>
+        </div>
+
+        <!-- Mot de passe facultatif -->
+        <div class="col-md-6 mb-3">
+            <label asp-for="MotPasse" class="form-label">Nouveau mot de passe (laisser vide pour conserver l'ancien)</label>
+            <input asp-for="MotPasse" type="password" class="form-control" />
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Enregistrer</button>
+    <a asp-action="Index" class="btn btn-secondary">Annuler</a>
+</form>

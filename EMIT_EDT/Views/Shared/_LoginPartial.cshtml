@@ -1,0 +1,27 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<EMIT_EDT.Models.Utilisateur> SignInManager
+@inject UserManager<EMIT_EDT.Models.Utilisateur> UserManager
+
+<ul class="navbar-nav">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <li class="nav-item">
+            <span class="nav-link text-light">
+                <i class="fas fa-user"></i> @UserManager.GetUserName(User)
+            </span>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-light" href="/Identity/Account/Logout">
+                <i class="fas fa-sign-out-alt"></i> Déconnexion
+            </a>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+            <a class="nav-link text-light" href="/Identity/Account/Login">
+                <i class="fas fa-sign-in-alt"></i> Connexion
+            </a>
+        </li>
+    }
+</ul>

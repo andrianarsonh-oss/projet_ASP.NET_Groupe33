@@ -1,0 +1,105 @@
+﻿@model EMIT_EDT.Models.Seance
+@{
+    ViewData["Title"] = "Créer une séance";
+}
+
+<h2><i class="fas fa-plus-circle"></i> Créer une séance</h2>
+<hr />
+
+<form asp-action="Create" method="post">
+    <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+    <div class="row g-3">
+        <!-- Matière -->
+        <div class="col-md-6">
+            <label asp-for="MatiereUEId" class="form-label">Matière / UE</label>
+            <select asp-for="MatiereUEId" class="form-select" asp-items="ViewBag.Matieres" required>
+                <option value="">-- Choisir une matière --</option>
+            </select>
+        </div>
+
+        <!-- Enseignant -->
+        <div class="col-md-6">
+            <label asp-for="EnseignantId" class="form-label">Enseignant</label>
+            <select asp-for="EnseignantId" class="form-select" asp-items="ViewBag.Enseignants" required>
+                <option value="">-- Choisir un enseignant --</option>
+            </select>
+        </div>
+
+        <!-- Promotion -->
+        <div class="col-md-4">
+            <label asp-for="PromotionId" class="form-label">Promotion</label>
+            <select asp-for="PromotionId" class="form-select" asp-items="ViewBag.Promotions" required>
+                <option value="">-- Choisir une promotion --</option>
+            </select>
+        </div>
+
+        <!-- Type -->
+        <div class="col-md-2">
+            <label asp-for="Type" class="form-label">Type</label>
+            <select asp-for="Type" class="form-select" required>
+                <option value="CM">CM</option>
+                <option value="TD">TD</option>
+                <option value="TP">TP</option>
+            </select>
+        </div>
+
+        <!-- Jour -->
+        <div class="col-md-2">
+            <label asp-for="JourSemaine" class="form-label">Jour</label>
+            <select asp-for="JourSemaine" class="form-select" required>
+                <option value="1">Lundi</option>
+                <option value="2">Mardi</option>
+                <option value="3">Mercredi</option>
+                <option value="4">Jeudi</option>
+                <option value="5">Vendredi</option>
+                <option value="6">Samedi</option>
+            </select>
+        </div>
+
+        <!-- Créneau -->
+        <div class="col-md-3">
+            <label asp-for="CreneauHoraireId" class="form-label">Créneau</label>
+            <select asp-for="CreneauHoraireId" class="form-select" asp-items="ViewBag.Creneaux" required>
+                <option value="">-- Choisir un créneau --</option>
+            </select>
+        </div>
+
+        <!-- Salle -->
+        <div class="col-md-4">
+            <label asp-for="SalleId" class="form-label">Salle</label>
+            <select asp-for="SalleId" class="form-select" asp-items="ViewBag.Salles" required>
+                <option value="">-- Choisir une salle --</option>
+            </select>
+        </div>
+
+        <!-- Dates -->
+        <div class="col-md-3">
+            <label asp-for="DateDebutValidite" class="form-label">Début</label>
+            <input asp-for="DateDebutValidite" type="date" class="form-control" required />
+        </div>
+        <div class="col-md-3">
+            <label asp-for="DateFinValidite" class="form-label">Fin</label>
+            <input asp-for="DateFinValidite" type="date" class="form-control" required />
+        </div>
+
+        <!-- Couleur -->
+        <div class="col-md-2">
+            <label asp-for="Couleur" class="form-label">Couleur</label>
+            <input asp-for="Couleur" type="color" class="form-control form-control-color" value="#1a5276" />
+        </div>
+
+        <!-- Semestre -->
+        <div class="col-md-3">
+            <label asp-for="SemestreId" class="form-label">Semestre</label>
+            <select asp-for="SemestreId" class="form-select" asp-items="ViewBag.Semestres" required>
+                <option value="">-- Choisir un semestre --</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Créer la séance</button>
+        <a asp-action="Index" class="btn btn-secondary">Annuler</a>
+    </div>
+</form>

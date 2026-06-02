@@ -1,0 +1,68 @@
+﻿@model EMIT_EDT.Models.Demande
+@{
+    ViewData["Title"] = "Nouvelle demande de salle";
+}
+
+<h2><i class="fas fa-clipboard-list"></i> Nouvelle demande de salle</h2>
+<hr />
+
+<form asp-action="Create" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <div class="row">
+        <!-- Étudiant -->
+        <div class="col-md-6 mb-3">
+            <label asp-for="EtudiantId" class="form-label">Étudiant</label>
+            <select asp-for="EtudiantId" class="form-select" asp-items="ViewBag.Etudiants" required>
+                <option value="">-- Choisir un étudiant --</option>
+            </select>
+        </div>
+
+        <!-- Salle souhaitée -->
+        <div class="col-md-6 mb-3">
+            <label asp-for="SalleId" class="form-label">Salle</label>
+            <select asp-for="SalleId" class="form-select" asp-items="ViewBag.Salles">
+                <option value="">-- Choisir une salle --</option>
+            </select>
+        </div>
+
+        <!-- Code salle (texte libre) -->
+        <div class="col-md-4 mb-3">
+            <label asp-for="CodeSalle" class="form-label">Code salle</label>
+            <input asp-for="CodeSalle" class="form-control" required placeholder="Ex: A-101" />
+        </div>
+
+        <!-- Type de demande -->
+        <div class="col-md-4 mb-3">
+            <label asp-for="TypeDemande" class="form-label">Type de demande</label>
+            <input asp-for="TypeDemande" class="form-control" placeholder="Cours, événement..." />
+        </div>
+
+        <!-- Autre demande -->
+        <div class="col-md-4 mb-3">
+            <label asp-for="AutreDemande" class="form-label">Autre précision</label>
+            <input asp-for="AutreDemande" class="form-control" placeholder="Besoin particulier..." />
+        </div>
+
+        <!-- Date et heure de début -->
+        <div class="col-md-4 mb-3">
+            <label asp-for="DureDebut" class="form-label">Début</label>
+            <input asp-for="DureDebut" type="datetime-local" class="form-control" required />
+        </div>
+
+        <!-- Date et heure de fin -->
+        <div class="col-md-4 mb-3">
+            <label asp-for="DureFin" class="form-label">Fin</label>
+            <input asp-for="DureFin" type="datetime-local" class="form-control" required />
+        </div>
+
+        <!-- Description -->
+        <div class="col-12 mb-3">
+            <label asp-for="Description" class="form-label">Description</label>
+            <textarea asp-for="Description" class="form-control" rows="4" placeholder="Décrivez votre demande..."></textarea>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Envoyer la demande</button>
+    <a asp-action="Index" class="btn btn-secondary">Annuler</a>
+</form>

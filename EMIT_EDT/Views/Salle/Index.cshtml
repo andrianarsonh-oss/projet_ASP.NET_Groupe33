@@ -1,0 +1,119 @@
+﻿@model List<EMIT_EDT.Models.Salle>
+@{
+    ViewData["Title"] = "Gestion des Salles";
+    var searchString = ViewBag.SearchString as string;
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="fas fa-door-open"></i> Salles</h2>
+    <a asp-action="Create" class="btn btn-primary"><i class="fas fa-plus"></i> Ajouter une salle</a>
+</div>
+
+<!-- Barre de recherche -->
+<div class="card mb-4">
+    <div class="card-body">
+        <form method="get" class="row g-2 align-items-end">
+            <div class="col-md-6">
+                <label class="form-label">Rechercher</label>
+                <input type="text" name="searchString" class="form-control"
+                       placeholder="Code, nom, bâtiment, localisation, équipement..."
+                       value="@searchString" />
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-outline-primary w-100">
+                    <i class="fas fa-search"></i> Filtrer
+                </button>
+            </div>
+            <div class="col-md-2">
+                <a asp-action="Index" class="btn btn-outline-secondary w-100">
+                    <i class="fas fa-undo"></i> Réinitialiser
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Tableau des salles -->
+<div class="card">
+    <div class="card-body">
+        <table class="table table-striped table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>Code</th>
+                    <th>Nom</th>
+                    <th>Capacité</th>
+                    <th>Localisation</th>
+                    <th>Type</th>
+                    <th>Équipements</th>
+                    <th>Statut</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var s in Model)
+                {
+                    <tr>
+                        <td><strong>@s.Code</strong></td>
+                        <td>@s.Nom</td>
+                        <td>@s.Capacite places</td>
+                        <td>
+                            @if (!string.IsNullOrWhiteSpace(s.PositionSalle))
+                            {
+                                @s.PositionSalle
+                            }
+                            else
+                            {
+                                @($"{s.Batiment?.Nom} (Étage {s.Etage})")
+                            }
+                        </td>
+                        <td>@s.TypeSalle?.Libelle</td>
+                        <td>
+                            @if (s.SalleEquipements != null && s.SalleEquipements.Any())
+                            {
+                                foreach (var se in s.SalleEquipements)
+                                {
+                                    <span class="badge bg-info me-1" title="@se.Equipement?.Description">
+                                        <i class="fas fa-@(se.Equipement?.Icone) me-1"></i>@se.Equipement?.Nom
+                                    </span>
+                                }
+                            }
+                            else
+                            {
+                                <span class="text-muted">Aucun</span>
+                            }
+                        </td>
+                        <td>
+                            @if (s.Statut == "Active")
+                            {
+                                <span class="badge bg-success">Active</span>
+                            }
+                            else if (s.Statut == "EnMaintenance")
+                            {
+                                <span class="badge bg-warning text-dark">Maintenance</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">@s.Statut</span>
+                            }
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@s.SalleId" class="btn btn-sm btn-warning" title="Modifier">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@s.SalleId" class="btn btn-sm btn-danger"
+                               onclick="return confirm('Supprimer cette salle ?')" title="Supprimer">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        @if (!Model.Any())
+        {
+            <p class="text-center text-muted">
+                Aucune salle trouvée. Modifiez vos critères de recherche ou créez une nouvelle salle.
+            </p>
+        }
+    </div>
+</div>

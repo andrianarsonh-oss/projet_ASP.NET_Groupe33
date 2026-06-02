@@ -1,0 +1,29 @@
+﻿@page
+@using Microsoft.AspNetCore.Identity
+@using EMIT_EDT.Models
+@inject SignInManager<Utilisateur> SignInManager
+@{
+    ViewData["Title"] = "Déconnexion";
+    Layout = "/Views/Shared/_LayoutLogin.cshtml";   // Layout sans sidebar, plus propre
+}
+
+<div class="text-center mt-5">
+    <h4>Vous avez été déconnecté avec succès.</h4>
+    <a class="btn btn-primary" href="/">Retour à l'accueil</a>
+</div>
+
+@functions {
+    // Appelé quand on clique sur le bouton "Déconnexion" (POST)
+    public async Task<IActionResult> OnPostAsync(string? returnUrl = null)
+    {
+        await SignInManager.SignOutAsync();
+        return Page();   // Affiche la page avec le message
+    }
+
+    // Appelé si on accède à la page directement (GET)
+    public async Task<IActionResult> OnGetAsync(string? returnUrl = null)
+    {
+        await SignInManager.SignOutAsync();
+        return Page();
+    }
+}

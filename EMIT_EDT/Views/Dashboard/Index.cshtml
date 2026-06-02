@@ -1,0 +1,138 @@
+﻿@{
+    ViewData["Title"] = "Accueil";
+}
+
+<div class="text-center mb-4">
+    <h1 class="fw-bold" style="color: #1a3c5e;">🏫 E.M.I.T.</h1>
+    <p class="lead mb-1"><strong>École de Management et d'Innovation Technologique</strong></p>
+    <p class="text-muted">Université de Fianarantsoa</p>
+    <hr class="w-50 mx-auto">
+    <p class="small text-muted">📍 Route de Masoabe, 3km de la gare routière, Fianarantsoa</p>
+</div>
+
+<!-- Statistiques -->
+<div class="row text-center mb-5">
+    <div class="col-md-3 mb-3">
+        <div class="card bg-primary text-white h-100">
+            <div class="card-body">
+                <h2 class="fw-bold">@ViewBag.TotalSeances</h2>
+                <p class="mb-0">Séances actives</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-3">
+        <div class="card bg-success text-white h-100">
+            <div class="card-body">
+                <h2 class="fw-bold">@ViewBag.SallesOccupees / @ViewBag.TotalSalles</h2>
+                <p class="mb-0">Salles occupées</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-3">
+        <div class="card bg-warning text-dark h-100">
+            <div class="card-body">
+                <h2 class="fw-bold">@ViewBag.SallesMaintenance</h2>
+                <p class="mb-0">En maintenance</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-3">
+        <div class="card bg-danger text-white h-100">
+            <div class="card-body">
+                <h2 class="fw-bold">@ViewBag.IncidentsOuverts</h2>
+                <p class="mb-0">Incidents ouverts</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Présentation EMIT -->
+<div class="row mb-5">
+    <div class="col-lg-6 mb-4">
+        <div class="card h-100">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="fas fa-info-circle"></i> À propos de l'E.M.I.T.</h5>
+            </div>
+            <div class="card-body">
+                <p>L'E.M.I.T. est une <strong>grande école publique</strong> au sein de l'<strong>Université de Fianarantsoa</strong>, qui a basculé totalement vers le <strong>système L.M.D.</strong></p>
+                <p>Elle se situe au cœur de l'Université de Fianarantsoa à <strong>3km de la gare routière</strong> sur la route qui mène vers <strong>Masoabe</strong>.</p>
+                <p>L'EMIT propose <strong>10 parcours</strong> répartis dans <strong>3 mentions</strong>.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6 mb-4">
+        <div class="card h-100">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0"><i class="fas fa-graduation-cap"></i> Système L.M.D.</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><strong>📘 Licence (L)</strong> : L1, L2, L3 - 6 semestres</li>
+                    <li class="list-group-item"><strong>📙 Master (M)</strong> : M1, M2 - 4 semestres</li>
+                    <li class="list-group-item"><strong>📕 Doctorat (D)</strong> : 6 semestres</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Formations -->
+<h3 class="text-center mb-4" style="color: #1a3c5e;">📚 Nos 3 Mentions et 10 Parcours</h3>
+
+<div class="row">
+    <!-- Management -->
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 border-primary">
+            <div class="card-header bg-primary text-white text-center">
+                <h5 class="mb-0"><i class="fas fa-briefcase"></i> Mention Management</h5>
+            </div>
+            <div class="card-body">
+                <h6 class="text-primary">📘 Grade Licence</h6>
+                <p>• Administration Économique et Sociale <strong>(AES)</strong></p>
+                <hr>
+                <h6 class="text-primary">📙 Grade Master</h6>
+                <p>• Management Décisionnel <strong>(MD)</strong></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Informatique -->
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 border-success">
+            <div class="card-header bg-success text-white text-center">
+                <h5 class="mb-0"><i class="fas fa-laptop-code"></i> Mention Informatique</h5>
+            </div>
+            <div class="card-body">
+                <h6 class="text-success">📘 Grade Licence</h6>
+                <p>• Développement d'Application Internet/Intranet <strong>(DA2I)</strong></p>
+                <p>• Conception, Intégration et Gestion des Systèmes d'Information <strong>(CIGSI)</strong></p>
+                <hr>
+                <h6 class="text-success">📙 Grade Master</h6>
+                <p>• Système d'Information, Géomatique et Décision <strong>(SIGD)</strong></p>
+                <p>• Modélisation et Ingénierie Informatique <strong>(M2I)</strong></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Relations Publiques et Multimédia -->
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 border-danger">
+            <div class="card-header bg-danger text-white text-center">
+                <h5 class="mb-0"><i class="fas fa-bullhorn"></i> Mention Relations Publiques et Multimédia</h5>
+            </div>
+            <div class="card-body">
+                <h6 class="text-danger">📘 Grade Licence</h6>
+                <p>• Communication Multimédia <strong>(CM)</strong></p>
+                <p>• Relations Publiques et Communication Organisationnelle <strong>(RPCO)</strong></p>
+                <hr>
+                <h6 class="text-danger">📙 Grade Master</h6>
+                <p>• Communications et Médias Numériques <strong>(CMN)</strong></p>
+                <p>• Relations Publiques et Communications <strong>(RPC)</strong></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<p class="text-center text-muted mt-4">
+    <strong>Total : 3 Mentions | 10 Parcours | 4 Licences | 6 Masters</strong>
+</p>

@@ -1,0 +1,58 @@
+﻿@model EMIT_EDT.Models.Salle
+@{
+    ViewData["Title"] = "Modifier une salle";
+}
+
+<h2><i class="fas fa-edit"></i> Modifier la salle</h2>
+<hr />
+
+<form asp-action="Edit" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <input type="hidden" asp-for="SalleId" />
+
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <label asp-for="Code" class="form-label">Code</label>
+            <input asp-for="Code" class="form-control" required />
+        </div>
+        <div class="col-md-4 mb-3">
+            <label asp-for="Nom" class="form-label">Nom</label>
+            <input asp-for="Nom" class="form-control" required />
+        </div>
+        <div class="col-md-4 mb-3">
+            <label asp-for="Capacite" class="form-label">Capacité</label>
+            <input asp-for="Capacite" type="number" class="form-control" min="10" max="500" required />
+        </div>
+        <div class="col-md-4 mb-3">
+            <label asp-for="Etage" class="form-label">Étage</label>
+            <input asp-for="Etage" type="number" class="form-control" required />
+        </div>
+        <div class="col-md-4 mb-3">
+            <label asp-for="BatimentId" class="form-label">Bâtiment</label>
+            <select asp-for="BatimentId" class="form-select" asp-items="@(new SelectList(ViewBag.Batiments, "BatimentId", "Nom"))" required>
+                <option value="">-- Choisir un bâtiment --</option>
+            </select>
+        </div>
+        <div class="col-md-4 mb-3">
+            <label asp-for="TypeSalleId" class="form-label">Type de salle</label>
+            <select asp-for="TypeSalleId" class="form-select" asp-items="@(new SelectList(ViewBag.TypeSalles, "TypeSalleId", "Libelle"))" required>
+                <option value="">-- Choisir un type --</option>
+            </select>
+        </div>
+        <div class="col-md-4 mb-3">
+            <label asp-for="PositionSalle" class="form-label">Localisation (précision)</label>
+            <input asp-for="PositionSalle" class="form-control" placeholder="Ex : Étage 2, couloir B" />
+        </div>
+        <div class="col-md-4 mb-3">
+            <label asp-for="Statut" class="form-label">Statut</label>
+            <select asp-for="Statut" class="form-select">
+                <option value="Active">Active</option>
+                <option value="EnMaintenance">En maintenance</option>
+                <option value="Indisponible">Indisponible</option>
+            </select>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Enregistrer les modifications</button>
+    <a asp-action="Index" class="btn btn-secondary">Annuler</a>
+</form>

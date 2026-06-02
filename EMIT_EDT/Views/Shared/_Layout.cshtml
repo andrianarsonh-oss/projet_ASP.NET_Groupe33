@@ -1,0 +1,142 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using EMIT_EDT.Services
+@inject SignInManager<EMIT_EDT.Models.Utilisateur> SignInManager
+@inject UserManager<EMIT_EDT.Models.Utilisateur> UserManager
+@inject NotificationService NotificationService
+@{
+    var user = await UserManager.GetUserAsync(User);
+    int nbNotifications = 0;
+    if (user != null)
+    {
+        nbNotifications = await NotificationService.GetCountNonLues(user.Id);
+    }
+}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - EMIT</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/main.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <div class="wrapper d-flex">
+        <!-- SIDEBAR STICKY -->
+        <nav class="sidebar bg-dark text-white d-flex flex-column" id="sidebar">
+            <!-- En-tête -->
+            <div class="sidebar-header d-flex align-items-center justify-content-between px-3 py-3 border-bottom border-secondary">
+                <span class="fw-bold fs-5">E.M.I.T.</span>
+                <button class="btn btn-sm btn-outline-light border-0" id="toggleSidebar">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+
+            <!-- Menu principal avec défilement -->
+            <div class="sidebar-menu flex-grow-1 overflow-auto">
+                <a href="/Dashboard" class="sidebar-link"><i class="fas fa-home me-2"></i> Tableau de bord</a>
+                <a href="/EmploiDuTemps" class="sidebar-link"><i class="fas fa-calendar-alt me-2"></i> Emploi du temps</a>
+
+                <a href="#sallesSubmenu" data-bs-toggle="collapse" class="sidebar-link">
+                    <i class="fas fa-door-open me-2"></i> Salles
+                </a>
+                <div class="collapse" id="sallesSubmenu">
+                    <a href="/Salle" class="sidebar-link ps-5">Toutes les salles</a>
+                    <a href="/Batiment" class="sidebar-link ps-5">Bâtiments</a>
+                </div>
+
+                <a href="/Demande" class="sidebar-link"><i class="fas fa-clipboard-list me-2"></i> Demandes</a>
+
+                <a href="#gestionSubmenu" data-bs-toggle="collapse" class="sidebar-link">
+                    <i class="fas fa-cogs me-2"></i> Gestion
+                </a>
+                <div class="collapse" id="gestionSubmenu">
+                    <a href="/Etudiant" class="sidebar-link ps-5">Étudiants</a>
+                    <a href="/Enseignant" class="sidebar-link ps-5">Professeurs</a>
+                    <a href="/Mention" class="sidebar-link ps-5">Mentions/Parcours</a>
+                    <a href="/Incident" class="sidebar-link ps-5">Incidents</a>
+                    <a href="/Admin" class="sidebar-link ps-5">Administrateurs</a>
+                </div>
+
+                <a href="/Statistique" class="sidebar-link"><i class="fas fa-chart-bar me-2"></i> Statistiques</a>
+            </div>
+
+            <!-- Section utilisateur (mode sombre + profil + déconnexion) -->
+            <div class="sidebar-footer border-top border-secondary p-3">
+                <!-- === BOUTON MODE SOMBRE === -->
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                    <span class="text-white small">Mode sombre</span>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="darkModeToggle">
+                    </div>
+                </div>
+
+                <!-- Profil utilisateur -->
+                <div class="d-flex align-items-center text-white mb-2">
+                    <i class="fas fa-user-circle fa-2x me-2"></i>
+                    <div>
+                        <div class="fw-semibold small">@user?.Nom @user?.Prenom</div>
+                        <div class="small text-white-50">@user?.Email</div>
+                    </div>
+                </div>
+                <!-- Déconnexion -->
+                <form asp-area="Identity" asp-page="/Account/Logout" method="post">
+                    <button type="submit" class="btn btn-outline-light btn-sm w-100">
+                        <i class="fas fa-sign-out-alt me-1"></i> Déconnexion
+                    </button>
+                </form>
+            </div>
+        </nav>
+
+        <!-- CONTENU PRINCIPAL -->
+        <main class="content flex-grow-1">
+            <div class="container-fluid py-4">
+                @if (TempData["Success"] != null)
+                {
+                    <div class="alert alert-success alert-dismissible fade show">
+                        ✅ @TempData["Success"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                }
+                @if (TempData["Error"] != null)
+                {
+                    <div class="alert alert-danger alert-dismissible fade show">
+                        ❌ @TempData["Error"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                }
+                @RenderBody()
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
+    <script>
+        document.getElementById("toggleSidebar").addEventListener("click", function(e) {
+            e.preventDefault();
+            document.querySelector(".wrapper").classList.toggle("sidebar-collapsed");
+        });
+
+        // ========== MODE SOMBRE ==========
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const currentTheme = localStorage.getItem('theme');
+        if (currentTheme === 'dark') {
+            document.body.classList.add('dark-mode');
+            darkModeToggle.checked = true;
+        }
+        darkModeToggle.addEventListener('change', function () {
+            if (this.checked) {
+                document.body.classList.add('dark-mode');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                document.body.classList.remove('dark-mode');
+                localStorage.setItem('theme', 'light');
+            }
+        });
+    </script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

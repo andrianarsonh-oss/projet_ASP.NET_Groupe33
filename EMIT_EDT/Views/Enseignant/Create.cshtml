@@ -1,0 +1,63 @@
+﻿@model EMIT_EDT.Models.Enseignant
+@{
+    ViewData["Title"] = "Ajouter un professeur";
+}
+
+<h2><i class="fas fa-chalkboard-teacher"></i> Ajouter un professeur</h2>
+<hr />
+
+<form asp-action="Create" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <!-- Champs Utilisateur -->
+    <h5>Informations de connexion</h5>
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label class="form-label">Nom</label>
+            <input name="nom" class="form-control" required />
+        </div>
+        <div class="col-md-6 mb-3">
+            <label class="form-label">Prénom</label>
+            <input name="prenom" class="form-control" required />
+        </div>
+        <div class="col-md-6 mb-3">
+            <label class="form-label">Email</label>
+            <input name="email" type="email" class="form-control" required />
+        </div>
+        <div class="col-md-6 mb-3">
+            <label class="form-label">Mot de passe</label>
+            <input name="password" type="password" class="form-control" required />
+        </div>
+    </div>
+
+    <!-- Champs Enseignant -->
+    <h5>Détails professionnels</h5>
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label asp-for="Matricule" class="form-label">Matricule</label>
+            <input asp-for="Matricule" class="form-control" required placeholder="Ex: PR001" />
+        </div>
+        <div class="col-md-6 mb-3">
+            <label asp-for="Titre" class="form-label">Titre</label>
+            <input asp-for="Titre" class="form-control" placeholder="Dr., Pr." />
+        </div>
+        <div class="col-md-6 mb-3">
+            <label asp-for="Contact" class="form-label">Contact</label>
+            <input asp-for="Contact" class="form-control" placeholder="Téléphone" />
+        </div>
+        <div class="col-md-6 mb-3">
+            <label asp-for="DureTravaille" class="form-label">Durée de travail (h)</label>
+            <input asp-for="DureTravaille" type="number" class="form-control" value="192" />
+        </div>
+        <div class="col-md-6 mb-3">
+            <label asp-for="Statut" class="form-label">Statut</label>
+            <select asp-for="Statut" class="form-select">
+                <option value="Permanent">Permanent</option>
+                <option value="Vacataire">Vacataire</option>
+            </select>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Enregistrer</button>
+    <a asp-action="Index" class="btn btn-secondary">Annuler</a>
+</form>

@@ -1,0 +1,39 @@
+﻿@model EMIT_EDT.Models.Incident
+@{
+    ViewData["Title"] = "Signaler un incident";
+}
+
+<h2><i class="fas fa-exclamation-triangle text-danger"></i> Signaler un incident</h2>
+<hr />
+
+<form asp-action="Create" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label asp-for="SalleId" class="form-label">Salle concernée</label>
+            <select asp-for="SalleId" class="form-select" asp-items="@(new SelectList(ViewBag.Salles, "SalleId", "Code"))" required>
+                <option value="">-- Choisir une salle --</option>
+            </select>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label asp-for="TypePanne" class="form-label">Type de panne</label>
+            <input asp-for="TypePanne" class="form-control" required placeholder="Ex: Climatisation" />
+        </div>
+        <div class="col-md-3 mb-3">
+            <label asp-for="NiveauUrgence" class="form-label">Urgence</label>
+            <select asp-for="NiveauUrgence" class="form-select">
+                <option value="1">Faible</option>
+                <option value="2">Moyen</option>
+                <option value="3">Urgent</option>
+            </select>
+        </div>
+        <div class="col-12 mb-3">
+            <label asp-for="Description" class="form-label">Description</label>
+            <textarea asp-for="Description" class="form-control" rows="4" required placeholder="Décrivez le problème..."></textarea>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-danger"><i class="fas fa-bell"></i> Signaler</button>
+    <a asp-action="Index" class="btn btn-secondary">Annuler</a>
+</form>
