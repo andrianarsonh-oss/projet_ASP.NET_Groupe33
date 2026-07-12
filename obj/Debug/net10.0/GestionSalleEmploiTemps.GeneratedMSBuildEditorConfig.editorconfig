@@ -1,0 +1,120 @@
+is_global = true
+build_property.TargetFramework = net10.0
+build_property.TargetFramework = net10.0
+build_property.TargetPlatformMinVersion = 
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.TargetFrameworkIdentifier = .NETCoreApp
+build_property.TargetFrameworkVersion = v10.0
+build_property.EntryPointFilePath = 
+build_property.RootNamespace = GestionSalleEmploiTemps
+build_property.RootNamespace = GestionSalleEmploiTemps
+build_property.ProjectDir = C:\Users\All Ydoh\source\repos\GestionSalleEmploiTemps\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 10.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\Users\All Ydoh\source\repos\GestionSalleEmploiTemps
+build_property._RazorSourceGeneratorDebug = 
+build_property.EffectiveAnalysisLevelStyle = 10.0
+build_property.EnableCodeStyleSeverity = 
+
+[C:/Users/All Ydoh/source/repos/GestionSalleEmploiTemps/Views/Admin/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/All Ydoh/source/repos/GestionSalleEmploiTemps/Views/Admin/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/All Ydoh/source/repos/GestionSalleEmploiTemps/Views/AffectationProfesseurCours/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWZmZWN0YXRpb25Qcm9mZXNzZXVyQ291cnNcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/All Ydoh/source/repos/GestionSalleEmploiTemps/Views/AffectationProfesseurCours/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWZmZWN0YXRpb25Qcm9mZXNzZXVyQ291cnNcRGVsZXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/All Ydoh/source/repos/GestionSalleEmploiTemps/Views/AffectationProfesseurCours/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWZmZWN0YXRpb25Qcm9mZXNzZXVyQ291cnNcRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/All Ydoh/source/repos/GestionSalleEmploiTemps/Views/AffectationProfesseurCours/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWZmZWN0YXRpb25Qcm9mZXNzZXVyQ291cnNcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/All Ydoh/source/repos/GestionSalleEmploiTemps/Views/AffectationProfesseurCours/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWZmZWN0YXRpb25Qcm9mZXNzZXVyQ291cnNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/All Ydoh/source/repos/GestionSalleEmploiTemps/Views/DisponibiliteProfesseurs/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGlzcG9uaWJpbGl0ZVByb2Zlc3NldXJzXENyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/All Ydoh/source/repos/GestionSalleEmploiTemps/Views/DisponibiliteProfesseurs/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGlzcG9uaWJpbGl0ZVByb2Zlc3NldXJzXERlbGV0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/All Ydoh/source/repos/GestionSalleEmploiTemps/Views/DisponibiliteProfesseurs/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGlzcG9uaWJpbGl0ZVByb2Zlc3NldXJzXERldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/All Ydoh/source/repos/GestionSalleEmploiTemps/Views/DisponibiliteProfesseurs/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGlzcG9uaWJpbGl0ZVByb2Zlc3NldXJzXEVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/All Ydoh/source/repos/GestionSalleEmploiTemps/Views/DisponibiliteProfesseurs/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGlzcG9uaWJpbGl0ZVByb2Zlc3NldXJzXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/All Ydoh/source/repos/GestionSalleEmploiTemps/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/All Ydoh/source/repos/GestionSalleEmploiTemps/Views/Professeurs/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZmVzc2V1cnNcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/All Ydoh/source/repos/GestionSalleEmploiTemps/Views/Professeurs/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZmVzc2V1cnNcRGVsZXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/All Ydoh/source/repos/GestionSalleEmploiTemps/Views/Professeurs/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZmVzc2V1cnNcRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/All Ydoh/source/repos/GestionSalleEmploiTemps/Views/Professeurs/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZmVzc2V1cnNcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/All Ydoh/source/repos/GestionSalleEmploiTemps/Views/Professeurs/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZmVzc2V1cnNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/All Ydoh/source/repos/GestionSalleEmploiTemps/Views/Shared/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/All Ydoh/source/repos/GestionSalleEmploiTemps/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/All Ydoh/source/repos/GestionSalleEmploiTemps/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/All Ydoh/source/repos/GestionSalleEmploiTemps/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 

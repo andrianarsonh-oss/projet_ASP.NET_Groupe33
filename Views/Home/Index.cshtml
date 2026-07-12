@@ -1,0 +1,291 @@
+﻿@{
+    ViewData["Title"] = "Accueil";
+}
+
+<style>
+    .hero {
+        background: linear-gradient(135deg, #085041 0%, #1D9E75 100%);
+        border-radius: 16px;
+        padding: 3rem 2.5rem;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 2rem;
+        margin-bottom: 2rem;
+    }
+
+        .hero h1 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 32px;
+            font-weight: 400;
+            line-height: 1.2;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero p {
+            font-size: 14px;
+            opacity: 0.8;
+            margin: 0;
+        }
+
+    .hero-stats {
+        display: flex;
+        gap: 12px;
+        flex-shrink: 0;
+    }
+
+    .hero-stat {
+        background: rgba(255,255,255,0.12);
+        border: 0.5px solid rgba(255,255,255,0.2);
+        border-radius: 12px;
+        padding: 12px 20px;
+        text-align: center;
+        min-width: 80px;
+    }
+
+        .hero-stat strong {
+            display: block;
+            font-size: 26px;
+            font-family: 'DM Serif Display', serif;
+            font-weight: 400;
+        }
+
+        .hero-stat span {
+            font-size: 11px;
+            opacity: 0.7;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+        }
+
+    .quick-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 16px;
+        margin-bottom: 2rem;
+    }
+
+    .quick-card {
+        background: #ffffff;
+        border-radius: 14px;
+        border: 0.5px solid rgba(0,0,0,0.08);
+        padding: 1.5rem;
+        text-decoration: none;
+        color: #2c2c2a;
+        transition: box-shadow 0.15s, transform 0.15s;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+        .quick-card:hover {
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transform: translateY(-2px);
+            color: #2c2c2a;
+            text-decoration: none;
+        }
+
+    .quick-card-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+    }
+
+    .icon-green {
+        background: #E1F5EE;
+    }
+
+    .icon-amber {
+        background: #FAEEDA;
+    }
+
+    .icon-blue {
+        background: #E6F1FB;
+    }
+
+    .icon-purple {
+        background: #EFE7FB;
+    }
+
+    .quick-card h5 {
+        font-size: 15px;
+        font-weight: 500;
+        margin: 0;
+    }
+
+    .quick-card p {
+        font-size: 13px;
+        color: #888780;
+        margin: 0;
+        line-height: 1.5;
+    }
+
+    .quick-card .arrow {
+        font-size: 18px;
+        color: #B4B2A9;
+        align-self: flex-end;
+        margin-top: auto;
+    }
+
+    .info-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+    }
+
+    .info-card {
+        background: #ffffff;
+        border-radius: 14px;
+        border: 0.5px solid rgba(0,0,0,0.08);
+        padding: 1.5rem;
+    }
+
+    .info-card-title {
+        font-size: 12px;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+        color: #888780;
+        margin-bottom: 1rem;
+    }
+
+    .info-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        font-size: 14px;
+    }
+
+        .info-list li {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 0.5px solid rgba(0,0,0,0.06);
+            color: #2c2c2a;
+        }
+
+            .info-list li:last-child {
+                border-bottom: none;
+            }
+
+    .badge-status {
+        font-size: 11px;
+        padding: 3px 10px;
+        border-radius: 20px;
+        font-weight: 500;
+    }
+
+    .badge-green {
+        background: #E1F5EE;
+        color: #0F6E56;
+    }
+
+    .badge-amber {
+        background: #FAEEDA;
+        color: #854F0B;
+    }
+
+    .badge-gray {
+        background: #F1EFE8;
+        color: #5F5E5A;
+    }
+
+    @@media (max-width: 640px) {
+        .hero {
+            flex-direction: column;
+        }
+
+        .hero-stats {
+            flex-wrap: wrap;
+        }
+
+        .info-row {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<div class="hero">
+    <div>
+        <h1>Bienvenue sur<br />Gestion Salle</h1>
+        <p>Planifiez, organisez et suivez les emplois du temps en temps réel.</p>
+    </div>
+
+    <div class="hero-stats">
+        <div class="hero-stat">
+            <strong>12</strong>
+            <span>Salles</span>
+        </div>
+
+        <div class="hero-stat">
+            <strong>34</strong>
+            <span>Profs</span>
+        </div>
+
+        <div class="hero-stat">
+            <strong>87%</strong>
+            <span>Dispo</span>
+        </div>
+    </div>
+</div>
+
+<div class="quick-cards">
+
+    <a class="quick-card" asp-controller="Professeurs" asp-action="Index">
+        <div class="quick-card-icon icon-green">👨‍🏫</div>
+        <h5>Professeurs</h5>
+        <p>Consulter et gérer la liste des professeurs enregistrés.</p>
+        <span class="arrow">→</span>
+    </a>
+
+    <a class="quick-card" asp-controller="DisponibiliteProfesseurs" asp-action="Index">
+        <div class="quick-card-icon icon-amber">🕐</div>
+        <h5>Disponibilités Professeurs</h5>
+        <p>Consulter, ajouter et modifier les créneaux de disponibilité.</p>
+        <span class="arrow">→</span>
+    </a>
+
+    <a class="quick-card" asp-controller="AffectationProfesseurCours" asp-action="Index">
+        <div class="quick-card-icon icon-blue">📚</div>
+        <h5>Affectation des cours</h5>
+        <p>Associer les professeurs aux cours ou matières.</p>
+        <span class="arrow">→</span>
+    </a>
+
+    <a class="quick-card" asp-controller="Home" asp-action="Index">
+        <div class="quick-card-icon icon-purple">🗓️</div>
+        <h5>Emploi du temps</h5>
+        <p>Visualiser le planning complet de la semaine en cours.</p>
+        <span class="arrow">→</span>
+    </a>
+
+</div>
+
+<div class="info-row">
+    <div class="info-card">
+        <div class="info-card-title">Professeurs du jour</div>
+
+        <ul class="info-list">
+            <li>M. Bernard — Mathématiques <span class="badge-status badge-green">Disponible</span></li>
+            <li>C. Laurent — Physique <span class="badge-status badge-amber">Partiel</span></li>
+            <li>P. Dubois — Informatique <span class="badge-status badge-green">Disponible</span></li>
+            <li>A. Martin — Histoire <span class="badge-status badge-gray">Absent</span></li>
+        </ul>
+    </div>
+
+    <div class="info-card">
+        <div class="info-card-title">Planning du jour</div>
+
+        <ul class="info-list">
+            <li>08h00 – 10h00 <span>Algèbre L1 — Salle 204</span></li>
+            <li>10h15 – 12h15 <span>Mécanique L2 — Amphi B</span></li>
+            <li>13h30 – 15h30 <span>Programmation M1 — Labo 1</span></li>
+            <li>16h00 – 18h00 <span>Géopolitique L3 — Salle 101</span></li>
+        </ul>
+    </div>
+</div>

@@ -1,0 +1,331 @@
+@model GestionSalleEmploiTemps.Models.Professeur
+
+@{
+    ViewData["Title"] = "Détails du professeur";
+}
+
+<style>
+    /* Structure Globale Entreprise */
+    .details-page {
+        max-width: 1200px;
+        margin: 40px auto;
+        padding: 0 20px;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        color: #1f2937;
+    }
+
+    .enterprise-layout {
+        display: grid;
+        grid-template-columns: 300px 1fr;
+        gap: 24px;
+        align-items: start;
+    }
+
+    /* COLONNE GAUCHE : Sidebar */
+    .profile-sidebar {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 24px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .sidebar-photo-wrapper {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+
+    .details-photo {
+        width: 110px;
+        height: 110px;
+        border-radius: 8px;
+        object-fit: cover;
+        border: 1px solid #d1d5db;
+        background: #f8fafc;
+    }
+
+    .sidebar-info {
+        text-align: center;
+        border-bottom: 1px solid #f3f4f6;
+        padding-bottom: 20px;
+        margin-bottom: 20px;
+    }
+
+        .sidebar-info h2 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #111827;
+            margin: 0 0 4px 0;
+        }
+
+        .sidebar-info .role-label {
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+    /* Statut Badge Style */
+    .status-badge {
+        display: inline-block;
+        padding: 6px 12px;
+        font-size: 12px;
+        font-weight: 600;
+        border-radius: 50px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        text-align: center;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .status-permanent {
+        background-color: #ecfdf5;
+        color: #065f46;
+        border: 1px solid #a7f3d0;
+    }
+
+    .status-vacataire {
+        background-color: #fffbeb;
+        color: #92400e;
+        border: 1px solid #fde68a;
+    }
+
+    .status-contractuel {
+        background-color: #f0fdfa;
+        color: #115e59;
+        border: 1px solid #99f6e4;
+    }
+
+    .status-default {
+        background-color: #f3f4f6;
+        color: #374151;
+        border: 1px solid #e5e7eb;
+    }
+
+    /* Style d'affichage des données (Lecture seule) */
+    .detail-group-custom {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 4px;
+    }
+
+    .detail-label-custom {
+        font-size: 12px;
+        color: #4b5563;
+        font-weight: 600;
+        margin-bottom: 6px;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+    }
+
+    .detail-value-custom {
+        width: 100%;
+        padding: 9px 12px;
+        border: 1px solid #e5e7eb;
+        border-radius: 6px;
+        font-size: 14px;
+        color: #111827;
+        background-color: #f9fafb; /* Fond légèrement grisé pour la lecture seule */
+        box-sizing: border-box;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    /* COLONNE DROITE : Blocs */
+    .main-content-panel {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+    }
+
+    .data-card {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 28px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .section-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: #1e40af;
+        margin: 0 0 20px 0;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #f3f4f6;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .info-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px 24px;
+    }
+
+    /* Barre d'actions */
+    .actions-panel {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 16px 28px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .btn-custom {
+        padding: 9px 20px;
+        border-radius: 6px;
+        font-weight: 500;
+        font-size: 14px;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        border: 1px solid transparent;
+        cursor: pointer;
+        transition: background-color 0.15s ease;
+    }
+
+    .btn-back {
+        background-color: #ffffff;
+        color: #374151;
+        border-color: #d1d5db;
+    }
+
+        .btn-back:hover {
+            background-color: #f9fafb;
+        }
+
+    .btn-edit {
+        background-color: #2563eb;
+        color: #ffffff;
+        font-weight: 600;
+    }
+
+        .btn-edit:hover {
+            background-color: #1d4ed8;
+        }
+
+    @@media(max-width: 900px) {
+        .enterprise-layout {
+            grid-template-columns: 1fr;
+        }
+
+        .info-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<div class="details-page">
+    <div class="enterprise-layout">
+
+        <aside class="profile-sidebar">
+            <div class="sidebar-photo-wrapper">
+                @if (!string.IsNullOrEmpty(Model.PhotoUrl))
+                {
+                    <img src="@Model.PhotoUrl" class="details-photo" alt="Photo de @Model.Nom" />
+                }
+                else
+                {
+                    <img src="https://ui-avatars.com/api/?name=@Model.Nom+@Model.Prenom&background=2563eb&color=fff&size=120" class="details-photo" alt="Avatar" />
+                }
+            </div>
+
+            <div class="sidebar-info">
+                <h2>@Model.Nom @Model.Prenom</h2>
+                <span class="role-label">Fiche Enseignant</span>
+            </div>
+
+            <div class="detail-group-custom">
+                <span class="detail-label-custom">Statut de l'agent</span>
+                @{
+                    var statutClass = Model.Statut switch
+                    {
+                        "Permanent" => "status-permanent",
+                        "Vacataire" => "status-vacataire",
+                        "Contractuel" => "status-contractuel",
+                        _ => "status-default"
+                    };
+                }
+                <div class="status-badge @statutClass">
+                    @(string.IsNullOrEmpty(Model.Statut) ? "Non défini" : Model.Statut)
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content-panel">
+
+            <div class="data-card">
+                <div class="section-title">Informations personnelles</div>
+                <div class="info-grid">
+                    <div class="detail-group-custom">
+                        <span class="detail-label-custom">Nom de famille</span>
+                        <div class="detail-value-custom">@Model.Nom</div>
+                    </div>
+                    <div class="detail-group-custom">
+                        <span class="detail-label-custom">Prénom</span>
+                        <div class="detail-value-custom">@Model.Prenom</div>
+                    </div>
+                    <div class="detail-group-custom">
+                        <span class="detail-label-custom">Adresse Email</span>
+                        <div class="detail-value-custom">@Model.Email</div>
+                    </div>
+                    <div class="detail-group-custom">
+                        <span class="detail-label-custom">Téléphone professionnel</span>
+                        <div class="detail-value-custom">@(string.IsNullOrEmpty(Model.Telephone) ? "-" : Model.Telephone)</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="data-card">
+                <div class="section-title">Informations administratives</div>
+                <div class="info-grid">
+                    <div class="detail-group-custom">
+                        <span class="detail-label-custom">Numéro de Matricule</span>
+                        <div class="detail-value-custom">@Model.MatriculeProfesseur</div>
+                    </div>
+                    <div class="detail-group-custom">
+                        <span class="detail-label-custom">Spécialité / Discipline</span>
+                        <div class="detail-value-custom">@(string.IsNullOrEmpty(Model.Specialite) ? "-" : Model.Specialite)</div>
+                    </div>
+                    <div class="detail-group-custom">
+                        <span class="detail-label-custom">Grade</span>
+                        <div class="detail-value-custom">@(string.IsNullOrEmpty(Model.Grade) ? "-" : Model.Grade)</div>
+                    </div>
+                    <div class="detail-group-custom">
+                        <span class="detail-label-custom">Diplôme le plus élevé</span>
+                        <div class="detail-value-custom">@(string.IsNullOrEmpty(Model.Diplome) ? "-" : Model.Diplome)</div>
+                    </div>
+                    <div class="detail-group-custom">
+                        <span class="detail-label-custom">Département d'affectation</span>
+                        <div class="detail-value-custom">@(string.IsNullOrEmpty(Model.Departement) ? "-" : Model.Departement)</div>
+                    </div>
+                    <div class="detail-group-custom">
+                        <span class="detail-label-custom">Date d'embauche</span>
+                        <div class="detail-value-custom">@(Model.DateEmbauche.HasValue ? Model.DateEmbauche.Value.ToString("dd/MM/yyyy") : "-")</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="actions-panel">
+                <a asp-action="Index" class="btn-custom btn-back">
+                    Retour à la liste
+                </a>
+
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn-custom btn-edit">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right: 4px;"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                    Modifier le profil
+                </a>
+            </div>
+
+        </main>
+    </div>
+</div>

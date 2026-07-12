@@ -1,0 +1,438 @@
+﻿@model GestionSalleEmploiTemps.Models.Professeur
+
+@{
+    ViewData["Title"] = "Ajouter un professeur";
+}
+
+<style>
+    .prof-page {
+        max-width: 950px;
+        margin: 30px auto;
+        padding-bottom: 120px;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .prof-card {
+        background: #fff;
+        border-radius: 24px;
+        box-shadow: 0 10px 35px rgba(0,0,0,.10);
+        overflow: hidden;
+    }
+
+    .prof-header {
+        background: linear-gradient(135deg, #085041, #1D9E75);
+        color: white;
+        padding: 30px;
+        text-align: center;
+    }
+
+        .prof-header h1 {
+            font-size: 30px;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .prof-header p {
+            margin-top: 8px;
+            opacity: .9;
+        }
+
+    .prof-body {
+        padding: 30px;
+    }
+
+    .section-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: #085041;
+        margin: 25px 0 18px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #E1F5EE;
+    }
+
+    .photo-box {
+        text-align: center;
+        margin-bottom: 25px;
+    }
+
+    .photo-preview {
+        width: 140px;
+        height: 140px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 6px solid #E1F5EE;
+        box-shadow: 0 8px 25px rgba(0,0,0,.18);
+        margin-bottom: 15px;
+        background: #1D9E75;
+    }
+
+    .photo-upload {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .photo-label {
+        background: #1D9E75;
+        color: white;
+        padding: 10px 22px;
+        border-radius: 14px;
+        cursor: pointer;
+        font-weight: 700;
+        display: inline-block;
+    }
+
+        .photo-label:hover {
+            background: #0F6E56;
+        }
+
+    .file-name {
+        font-size: 13px;
+        color: #555;
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+    }
+
+        .form-group.full {
+            grid-column: span 2;
+        }
+
+    label {
+        font-weight: 600;
+        margin-bottom: 6px;
+        color: #333;
+    }
+
+    input,
+    select {
+        height: 45px;
+        border: 1px solid #ccc;
+        border-radius: 12px;
+        padding: 0 14px;
+        font-size: 15px;
+        background: white;
+    }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: #1D9E75;
+            box-shadow: 0 0 0 3px rgba(29,158,117,.15);
+        }
+
+    .text-danger {
+        color: #dc3545;
+        font-size: 13px;
+        margin-top: 4px;
+    }
+
+    .buttons {
+        margin-top: 35px;
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .btn-main {
+        background: #1D9E75;
+        color: white;
+        border: none;
+        padding: 13px 25px;
+        border-radius: 14px;
+        font-weight: 700;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+        .btn-main:hover {
+            background: #0F6E56;
+            color: white;
+        }
+
+    .btn-secondary-custom {
+        background: #e9ecef;
+        color: #333;
+        border: none;
+        padding: 13px 25px;
+        border-radius: 14px;
+        font-weight: 700;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    @@media(max-width: 700px) {
+        .form-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .form-group.full {
+            grid-column: span 1;
+        }
+
+        .prof-body {
+            padding: 20px;
+        }
+    }
+</style>
+
+<div class="prof-page">
+    <div class="prof-card">
+
+        <div class="prof-header">
+            <h1>Ajouter un professeur</h1>
+            <p>Remplissez toutes les informations du nouveau professeur</p>
+        </div>
+
+        <div class="prof-body">
+
+            <form asp-action="Create" method="post" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <div class="photo-box">
+                    <img id="previewPhoto"
+                         src="https://ui-avatars.com/api/?name=Professeur&background=1D9E75&color=fff&size=200"
+                         class="photo-preview" />
+
+                    <div class="photo-upload">
+                        <label for="photo" class="photo-label">
+                            Choisir une photo
+                        </label>
+
+                        <input type="file"
+                               name="photo"
+                               id="photo"
+                               accept="image/*"
+                               hidden />
+
+                        <div id="fileName" class="file-name">
+                            Aucune photo sélectionnée
+                        </div>
+                    </div>
+
+                    <small>Formats acceptés : JPG, PNG, WEBP — Taille max : 2 Mo</small>
+                </div>
+
+                <div class="section-title">
+                    Informations personnelles
+                </div>
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label asp-for="Nom"></label>
+                        <input asp-for="Nom" />
+                        <span asp-validation-for="Nom" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Prenom"></label>
+                        <input asp-for="Prenom" />
+                        <span asp-validation-for="Prenom" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Email"></label>
+                        <input asp-for="Email" type="email" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Telephone"></label>
+                        <input asp-for="Telephone" />
+                        <span asp-validation-for="Telephone" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group full">
+                        <label asp-for="Specialite">Spécialité</label>
+                        <select asp-for="Specialite">
+                            <option value="">-- Sélectionner une spécialité --</option>
+                            <option value="Algèbre">Algèbre</option>
+                            <option value="Analyse">Analyse</option>
+                            <option value="Mathématiques">Mathématiques</option>
+                            <option value="Statistiques">Statistiques</option>
+                            <option value="Informatique">Informatique</option>
+                            <option value="Programmation">Programmation</option>
+                            <option value="Base de Données">Base de Données</option>
+                            <option value="Réseaux">Réseaux</option>
+                            <option value="Physique">Physique</option>
+                            <option value="Chimie">Chimie</option>
+                            <option value="Biologie">Biologie</option>
+                            <option value="Comptabilité">Comptabilité</option>
+                            <option value="Gestion">Gestion</option>
+                            <option value="Économie">Économie</option>
+                            <option value="Marketing">Marketing</option>
+                            <option value="Finance">Finance</option>
+                            <option value="Anglais">Anglais</option>
+                            <option value="Français">Français</option>
+                            <option value="Allemand">Allemand</option>
+                            <option value="Communication">Communication</option>
+                        </select>
+                        <span asp-validation-for="Specialite" class="text-danger"></span>
+                    </div>
+
+                </div>
+
+                <div class="section-title">
+                    Informations professionnelles
+                </div>
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label asp-for="Grade">Grade</label>
+                        <select asp-for="Grade">
+                            <option value="">-- Sélectionner un grade --</option>
+                            <option value="Assistant">Assistant</option>
+                            <option value="Assistant Enseignant">Assistant Enseignant</option>
+                            <option value="Assistant de Recherche">Assistant de Recherche</option>
+                            <option value="Maitre Assistant">Maître Assistant</option>
+                            <option value="Maitre de Conferences">Maître de Conférences</option>
+                            <option value="Professeur Titulaire">Professeur Titulaire</option>
+                            <option value="Docteur">Docteur</option>
+                            <option value="Doctorant">Doctorant</option>
+                            <option value="Ingenieur">Ingénieur</option>
+                            <option value="Expert">Expert</option>
+                        </select>
+                        <span asp-validation-for="Grade" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Diplome">Diplôme</label>
+                        <select asp-for="Diplome">
+                            <option value="">-- Sélectionner un diplôme --</option>
+                            <option value="Baccalaureat">Baccalauréat</option>
+                            <option value="BTS">BTS</option>
+                            <option value="DTS">DTS</option>
+                            <option value="Licence">Licence</option>
+                            <option value="Master 1">Master 1</option>
+                            <option value="Master 2">Master 2</option>
+                            <option value="Ingenieur">Ingénieur</option>
+                            <option value="Doctorat">Doctorat</option>
+                            <option value="HDR">HDR</option>
+                        </select>
+                        <span asp-validation-for="Diplome" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Departement">Département</label>
+                        <select asp-for="Departement">
+                            <option value="">-- Sélectionner un département --</option>
+                            <option value="Mathématiques">Mathématiques</option>
+                            <option value="Informatique">Informatique</option>
+                            <option value="Physique">Physique</option>
+                            <option value="Chimie">Chimie</option>
+                            <option value="Biologie">Biologie</option>
+                            <option value="Gestion">Gestion</option>
+                            <option value="Comptabilité">Comptabilité</option>
+                            <option value="Finance">Finance</option>
+                            <option value="Marketing">Marketing</option>
+                            <option value="Langues">Langues</option>
+                            <option value="Communication">Communication</option>
+                            <option value="Sciences Sociales">Sciences Sociales</option>
+                            <option value="Administration">Administration</option>
+                        </select>
+                        <span asp-validation-for="Departement" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="MatriculeProfesseur"></label>
+                        <input asp-for="MatriculeProfesseur" />
+                        <span asp-validation-for="MatriculeProfesseur" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="DateEmbauche"></label>
+                        <input asp-for="DateEmbauche" type="date" />
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Statut"></label>
+                        <select asp-for="Statut">
+                            <option value="">-- Sélectionner le statut --</option>
+                            <option value="Permanent">Permanent</option>
+                            <option value="Vacataire">Vacataire</option>
+                            <option value="Contractuel">Contractuel</option>
+                        </select>
+                        <span asp-validation-for="Statut" class="text-danger"></span>
+                    </div>
+
+                </div>
+
+                <div class="buttons">
+                    <a asp-action="Index" class="btn-secondary-custom">
+                        Retour à la liste
+                    </a>
+
+                    <button type="submit" class="btn-main">
+                        Enregistrer le professeur
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        const photoInput = document.getElementById('photo');
+        const previewPhoto = document.getElementById('previewPhoto');
+        const fileName = document.getElementById('fileName');
+
+        if (photoInput) {
+            photoInput.addEventListener('change', function () {
+                const file = this.files[0];
+
+                if (!file) {
+                    fileName.textContent = 'Aucune photo sélectionnée';
+                    previewPhoto.src = 'https://ui-avatars.com/api/?name=Professeur&background=1D9E75&color=fff&size=200';
+                    return;
+                }
+
+                if (!file.type.startsWith('image/')) {
+                    alert('Veuillez sélectionner une image.');
+                    this.value = '';
+                    fileName.textContent = 'Aucune photo sélectionnée';
+                    previewPhoto.src = 'https://ui-avatars.com/api/?name=Professeur&background=1D9E75&color=fff&size=200';
+                    return;
+                }
+
+                if (file.size > 2 * 1024 * 1024) {
+                    alert('La photo ne doit pas dépasser 2 Mo.');
+                    this.value = '';
+                    fileName.textContent = 'Aucune photo sélectionnée';
+                    previewPhoto.src = 'https://ui-avatars.com/api/?name=Professeur&background=1D9E75&color=fff&size=200';
+                    return;
+                }
+
+                fileName.textContent = 'Photo sélectionnée : ' + file.name;
+
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    previewPhoto.src = e.target.result;
+                };
+
+                reader.readAsDataURL(file);
+            });
+        }
+    </script>
+}

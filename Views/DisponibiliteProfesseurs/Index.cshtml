@@ -1,0 +1,353 @@
+@model IEnumerable<GestionSalleEmploiTemps.Models.DisponibiliteProfesseur>
+
+@{
+    ViewData["Title"] = "Disponibilités des professeurs";
+}
+
+<style>
+    /* Structure Globale Entreprise */
+    .index-page {
+        max-width: 1200px;
+        margin: 40px auto;
+        padding: 0 20px;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        color: #1f2937;
+    }
+
+    /* En-tête de page */
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 24px;
+        border-bottom: 1px solid #f3f4f6;
+        padding-bottom: 16px;
+    }
+
+        .page-header h2 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #111827;
+            margin: 0;
+        }
+
+    /* Message de succès */
+    .alert-success-custom {
+        background-color: #ecfdf5;
+        border: 1px solid #a7f3d0;
+        color: #065f46;
+        padding: 12px 16px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 500;
+        margin-bottom: 20px;
+    }
+
+    /* Formulaire de filtres horizontal */
+    .filter-zone {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 16px 20px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        margin-bottom: 24px;
+    }
+
+    .filter-form {
+        display: flex;
+        gap: 16px;
+        align-items: flex-end;
+        flex-wrap: wrap;
+    }
+
+    .filter-group {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        min-width: 180px;
+    }
+
+    .filter-label {
+        font-size: 11px;
+        color: #4b5563;
+        font-weight: 700;
+        margin-bottom: 6px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .filter-input {
+        width: 100%;
+        padding: 8px 12px;
+        border: 1px solid #d1d5db;
+        border-radius: 6px;
+        font-size: 14px;
+        color: #111827;
+        background-color: #ffffff;
+        height: 38px;
+        box-sizing: border-box;
+    }
+
+        .filter-input:focus {
+            border-color: #2563eb;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+        }
+
+    /* Tableaux style épuré */
+    .table-container {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        overflow: hidden;
+    }
+
+    .enterprise-table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+        font-size: 14px;
+    }
+
+        .enterprise-table th {
+            background-color: #f9fafb;
+            color: #4b5563;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 0.05em;
+            padding: 12px 20px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .enterprise-table td {
+            padding: 14px 20px;
+            border-bottom: 1px solid #f3f4f6;
+            color: #374151;
+            vertical-align: middle;
+        }
+
+        .enterprise-table tr:hover {
+            background-color: #f8fafc;
+        }
+
+    /* Badges de Statut */
+    .status-badge {
+        display: inline-block;
+        padding: 4px 10px;
+        font-size: 12px;
+        font-weight: 600;
+        border-radius: 50px;
+        text-align: center;
+        border: 1px solid transparent;
+    }
+
+    .status-disponible {
+        background-color: #ecfdf5;
+        color: #065f46;
+        border-color: #a7f3d0;
+    }
+
+    .status-occupe {
+        background-color: #fffbeb;
+        color: #92400e;
+        border-color: #fde68a;
+    }
+
+    .status-danger {
+        background-color: #fef2f2;
+        color: #991b1b;
+        border-color: #fca5a5;
+    }
+
+    /* Boutons et Liens */
+    .btn-custom {
+        padding: 8px 16px;
+        border-radius: 6px;
+        font-weight: 500;
+        font-size: 14px;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        border: 1px solid transparent;
+        cursor: pointer;
+        height: 38px;
+        box-sizing: border-box;
+    }
+
+    .btn-success-custom {
+        background-color: #10b981;
+        color: #ffffff;
+    }
+
+        .btn-success-custom:hover {
+            background-color: #059669;
+        }
+
+    .btn-filter {
+        background-color: #2563eb;
+        color: #ffffff;
+        font-weight: 600;
+    }
+
+        .btn-filter:hover {
+            background-color: #1d4ed8;
+        }
+
+    .action-links {
+        display: flex;
+        gap: 12px;
+    }
+
+    .link-details {
+        color: #2563eb;
+        font-weight: 500;
+        text-decoration: none;
+    }
+
+        .link-details:hover {
+            text-decoration: underline;
+        }
+
+    .link-edit {
+        color: #d97706;
+        font-weight: 500;
+        text-decoration: none;
+    }
+
+        .link-edit:hover {
+            text-decoration: underline;
+        }
+
+    .link-delete {
+        color: #dc2626;
+        font-weight: 500;
+        text-decoration: none;
+    }
+
+        .link-delete:hover {
+            text-decoration: underline;
+        }
+
+    .empty-state {
+        text-align: center;
+        padding: 40px;
+        color: #6b7280;
+        font-style: italic;
+    }
+</style>
+
+<div class="index-page">
+
+    <div class="page-header">
+        <h2>Disponibilités des professeurs</h2>
+        <a asp-action="Create" class="btn-custom btn-success-custom">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            Nouvelle disponibilité
+        </a>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success-custom">
+            @TempData["Success"]
+        </div>
+    }
+
+    <div class="filter-zone">
+        <form method="get" asp-action="Index" class="filter-form">
+
+            <div class="filter-group">
+                <label class="filter-label">Enseignant</label>
+                <input type="text" name="search" value="@ViewBag.Search" class="filter-input" placeholder="Rechercher un professeur..." />
+            </div>
+
+            <div class="filter-group">
+                <label class="filter-label">Jour</label>
+                <select name="jour" class="filter-input">
+                    <option value="">Tous les jours</option>
+                    @foreach (var j in ViewBag.Jours)
+                    {
+                        <!option value="@j" @(ViewBag.Jour == j ? "selected" : "")>@j</!option>
+                    }
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label class="filter-label">Statut</label>
+                <select name="statut" class="filter-input">
+                    <option value="">Tous les statuts</option>
+                    @foreach (var s in ViewBag.Statuts)
+                    {
+                        <!option value="@s" @(ViewBag.Statut == s ? "selected" : "")>@s</!option>
+                    }
+                </select>
+            </div>
+
+            <button type="submit" class="btn-custom btn-filter">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right: 4px;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                Filtrer
+            </button>
+        </form>
+    </div>
+
+    <div class="table-container">
+        @if (Model.Any())
+        {
+            <table class="enterprise-table">
+                <thead>
+                    <tr>
+                        <th>Professeur</th>
+                        <th>Jour</th>
+                        <th>Heure début</th>
+                        <th>Heure fin</th>
+                        <th>Statut</th>
+                        <th width="230">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td style="font-weight: 600;">
+                                @item.Professeur?.Nom @item.Professeur?.Prenom
+                            </td>
+                            <td>@item.Jour</td>
+                            <td>@item.HeureDebut.ToString(@"hh\:mm")</td>
+                            <td>@item.HeureFin.ToString(@"hh\:mm")</td>
+                            <td>
+                                @if (item.Statut == "Disponible")
+                                {
+                                    <span class="status-badge status-disponible">Disponible</span>
+                                }
+                                else if (item.Statut == "Occupé")
+                                {
+                                    <span class="status-badge status-occupe">Occupé</span>
+                                }
+                                else
+                                {
+                                    <span class="status-badge status-danger">@item.Statut</span>
+                                }
+                            </td>
+                            <td>
+                                <div class="action-links">
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="link-details">Détails</a>
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="link-edit">Modifier</a>
+                                    <a asp-action="Delete" asp-route-id="@item.Id" class="link-delete">Supprimer</a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <div class="empty-state">
+                Aucun enregistrement trouvé pour vos critères de recherche.
+            </div>
+        }
+    </div>
+</div>

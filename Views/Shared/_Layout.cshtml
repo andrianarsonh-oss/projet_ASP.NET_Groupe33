@@ -1,0 +1,202 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>@ViewData["Title"] - GestionSalleEmploiTemps</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+        background: #f4f6f9;
+        font-family: 'Poppins', sans-serif;
+        min-height: 100vh;
+        }
+
+        .premium-navbar {
+        background: linear-gradient(135deg,#085041,#1D9E75);
+        box-shadow: 0 5px 20px rgba(0,0,0,.15);
+        padding: 12px 25px;
+        }
+
+        .navbar-brand {
+        color: white !important;
+        font-weight: 700;
+        font-size: 20px;
+        }
+
+        .brand-icon {
+        width: 45px;
+        height: 45px;
+        background: rgba(255,255,255,.15);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 12px;
+        font-size: 22px;
+        }
+
+        .brand-subtitle {
+        font-size: 11px;
+        opacity: .8;
+        display: block;
+        font-weight: 300;
+        }
+
+        .premium-navbar .nav-link {
+        color: rgba(255,255,255,.9) !important;
+        font-weight: 500;
+        margin-left: 6px;
+        padding: 10px 16px !important;
+        border-radius: 30px;
+        transition: .3s;
+        }
+
+        .premium-navbar .nav-link:hover {
+        background: rgba(255,255,255,.15);
+        color: white !important;
+        transform: translateY(-2px);
+        }
+
+        .navbar-toggler {
+        border: none;
+        }
+
+        .navbar-toggler:focus {
+        box-shadow: none;
+        }
+
+        .main-container {
+        padding: 30px;
+        }
+
+        footer {
+        background: white;
+        border-top: 1px solid #e5e5e5;
+        margin-top: 40px;
+        padding: 15px;
+        text-align: center;
+        color: #666;
+        font-size: 14px;
+        }
+
+        @@media (max-width: 768px) {
+        .main-container {
+        padding: 15px;
+        }
+
+        .premium-navbar {
+        padding: 10px;
+        }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark premium-navbar">
+            <div class="container-fluid">
+
+                <a class="navbar-brand d-flex align-items-center"
+                   asp-controller="Home"
+                   asp-action="Index">
+
+                    <div class="brand-icon">
+                        📅
+                    </div>
+
+                    <div>
+                        Gestion Salle
+                        <span class="brand-subtitle">
+                            Gestion d'Emploi du Temps
+                        </span>
+                    </div>
+                </a>
+
+                <button class="navbar-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#navbarMain"
+                        aria-controls="navbarMain"
+                        aria-expanded="false"
+                        aria-label="Ouvrir le menu">
+
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarMain">
+                    <ul class="navbar-nav ms-auto">
+
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               asp-controller="Home"
+                               asp-action="Index">
+                                🏠 Accueil
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               asp-controller="Professeurs"
+                               asp-action="Index">
+                                👨‍🏫 Professeurs
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               asp-controller="DisponibiliteProfesseurs"
+                               asp-action="Index">
+                                🕐 Disponibilités
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               asp-controller="AffectationProfesseurCours"
+                               asp-action="Index">
+                                📚 Affectations
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               asp-controller="Home"
+                               asp-action="Index">
+                                🗓️ Emploi du Temps
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container-fluid main-container">
+        <main role="main">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer>
+        © @DateTime.Now.Year - GestionSalleEmploiTemps | Système de Gestion des Emplois du Temps
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>

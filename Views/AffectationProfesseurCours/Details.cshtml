@@ -1,0 +1,401 @@
+@model GestionSalleEmploiTemps.Models.AffectationProfesseurCours
+
+@{
+    ViewData["Title"] = "Détails de l'affectation";
+
+    var prenom = Model?.Professeur?.Prenom ?? "";
+    var nom = Model?.Professeur?.Nom ?? "";
+    var initiales = (prenom.Length > 0 ? prenom.Substring(0, 1) : "") +
+                      (nom.Length > 0 ? nom.Substring(0, 1) : "");
+    var nomComplet = (nom.Length > 0 ? nom.ToUpper() + " " : "") + prenom;
+    var nomCours = Model?.NomCours ?? "";
+    var codeCours = Model?.CodeCours ?? "";
+    var niveau = Model?.Niveau ?? "";
+    var classe = Model?.Classe ?? "";
+    var statut = Model?.Statut ?? "";
+    var dateAff = Model?.DateAffectation;
+    var dateStr = dateAff.HasValue ? dateAff.Value.ToString("dd MMMM yyyy") : "—";
+    var modelId = Model?.Id ?? 0;
+
+    var nivClass = niveau switch
+    {
+        "Licence 1" => "niv-L1",
+        "Licence 2" => "niv-L2",
+        "Licence 3" => "niv-L3",
+        "Master 1" => "niv-M1",
+        "Master 2" => "niv-M2",
+        _ => ""
+    };
+}
+
+<style>
+    .detail-page {
+        max-width: 720px;
+        margin: 40px auto;
+        padding: 0 20px;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    .detail-breadcrumb {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        color: #888;
+        margin-bottom: 18px;
+    }
+
+        .detail-breadcrumb a {
+            color: #534AB7;
+            text-decoration: none;
+        }
+
+            .detail-breadcrumb a:hover {
+                text-decoration: underline;
+            }
+
+        .detail-breadcrumb span {
+            color: #ccc;
+        }
+
+    .detail-container {
+        background: #fff;
+        border: 0.5px solid #e0e0e0;
+        border-top: 4px solid #7F77DD;
+        border-radius: 0 0 14px 14px;
+        overflow: hidden;
+    }
+
+    .detail-hero {
+        background: #EEEDFE;
+        padding: 24px 32px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        border-bottom: 0.5px solid #CECBF6;
+    }
+
+    .detail-hero-avatar {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background: #7F77DD;
+        color: #fff;
+        font-size: 18px;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .detail-hero-info h2 {
+        font-size: 18px;
+        font-weight: 500;
+        color: #26215C;
+        margin: 0 0 4px;
+    }
+
+    .detail-hero-info p {
+        font-size: 13px;
+        color: #534AB7;
+        margin: 0;
+    }
+
+    .code-pill {
+        display: inline-block;
+        padding: 3px 10px;
+        background: #EEEDFE;
+        color: #3C3489;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 500;
+        margin-left: auto;
+        align-self: flex-start;
+    }
+
+    .detail-section {
+        padding: 20px 32px;
+        border-bottom: 0.5px solid #f0f0f0;
+    }
+
+        .detail-section:last-of-type {
+            border-bottom: none;
+        }
+
+    .section-title {
+        font-size: 11px;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: #7F77DD;
+        padding-bottom: 10px;
+        margin-bottom: 14px;
+        border-bottom: 0.5px solid #CECBF6;
+    }
+
+    .detail-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
+    }
+
+    .detail-field {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .detail-field-label {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: #999;
+        font-weight: 500;
+    }
+
+    .detail-field-value {
+        font-size: 14px;
+        color: #222;
+        font-weight: 500;
+    }
+
+    .niveau-pill {
+        display: inline-block;
+        padding: 3px 10px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 500;
+    }
+
+    .niv-L1 {
+        background: #E6F1FB;
+        color: #0C447C;
+    }
+
+    .niv-L2 {
+        background: #EEEDFE;
+        color: #3C3489;
+    }
+
+    .niv-L3 {
+        background: #FBEAF0;
+        color: #72243E;
+    }
+
+    .niv-M1 {
+        background: #FAECE7;
+        color: #712B13;
+    }
+
+    .niv-M2 {
+        background: #EAF3DE;
+        color: #27500A;
+    }
+
+    .classe-pill {
+        display: inline-block;
+        padding: 3px 10px;
+        background: #FBEAF0;
+        color: #72243E;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 500;
+    }
+
+    .badge-actif {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 4px 12px;
+        background: #E1F5EE;
+        color: #085041;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 500;
+    }
+
+        .badge-actif::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: #1D9E75;
+            border-radius: 50%;
+        }
+
+    .badge-inactif {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 4px 12px;
+        background: #f0f0f0;
+        color: #555;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 500;
+    }
+
+        .badge-inactif::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: #999;
+            border-radius: 50%;
+        }
+
+    .date-card {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 14px;
+        background: #E1F5EE;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 500;
+        color: #085041;
+    }
+
+    .detail-actions {
+        padding: 18px 32px;
+        background: #fafafa;
+        border-top: 0.5px solid #eee;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .btn-det {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 18px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 500;
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+        transition: background 0.15s;
+    }
+
+    .btn-back-det {
+        background: #f4f4f4;
+        color: #444;
+        border: 0.5px solid #ddd;
+    }
+
+        .btn-back-det:hover {
+            background: #e8e8e8;
+            color: #222;
+            text-decoration: none;
+        }
+
+    .btn-edit-det {
+        background: #EEEDFE;
+        color: #3C3489;
+    }
+
+        .btn-edit-det:hover {
+            background: #CECBF6;
+            color: #26215C;
+            text-decoration: none;
+        }
+
+    @@media(max-width: 600px) {
+        .detail-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .detail-hero {
+            flex-wrap: wrap;
+        }
+    }
+</style>
+
+<div class="detail-page">
+
+    <div class="detail-breadcrumb">
+        <a asp-action="Index"><i class="bi bi-list-ul"></i> Affectations</a>
+        <span>›</span>
+        <span>Détails</span>
+    </div>
+
+    <div class="detail-container">
+
+        <!-- Hero -->
+        <div class="detail-hero">
+            <div class="detail-hero-avatar">@initiales.ToUpper()</div>
+            <div class="detail-hero-info">
+                <h2>@nomComplet</h2>
+                <p>@nomCours</p>
+            </div>
+            <span class="code-pill">@codeCours</span>
+        </div>
+
+        <!-- Section cours -->
+        <div class="detail-section">
+            <div class="section-title">Informations du cours</div>
+            <div class="detail-grid">
+                <div class="detail-field">
+                    <span class="detail-field-label">Intitulé du cours</span>
+                    <span class="detail-field-value">@nomCours</span>
+                </div>
+                <div class="detail-field">
+                    <span class="detail-field-label">Code du cours</span>
+                    <span class="code-pill" style="font-size:13px; margin-left:0;">@codeCours</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section niveau & classe -->
+        <div class="detail-section">
+            <div class="section-title">Niveau &amp; Classe</div>
+            <div class="detail-grid">
+                <div class="detail-field">
+                    <span class="detail-field-label">Niveau d'études</span>
+                    <span class="niveau-pill @nivClass">@niveau</span>
+                </div>
+                <div class="detail-field">
+                    <span class="detail-field-label">Classe / Mention</span>
+                    <span class="classe-pill">@classe</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section planification -->
+        <div class="detail-section">
+            <div class="section-title">Planification</div>
+            <div class="detail-grid">
+                <div class="detail-field">
+                    <span class="detail-field-label">Date de début</span>
+                    <span class="date-card">
+                        <i class="bi bi-calendar3"></i>
+                        @dateStr
+                    </span>
+                </div>
+                <div class="detail-field">
+                    <span class="detail-field-label">Statut</span>
+                    @if (statut == "Actif")
+                    {
+                        <span class="badge-actif">Actif</span>
+                    }
+                    else
+                    {
+                        <span class="badge-inactif">@statut</span>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="detail-actions">
+            <a asp-action="Index" class="btn-det btn-back-det">
+                <i class="bi bi-arrow-left"></i> Retour à la liste
+            </a>
+            <a asp-action="Edit" asp-route-id="@modelId" class="btn-det btn-edit-det">
+                <i class="bi bi-pencil"></i> Modifier
+            </a>
+        </div>
+
+    </div>
+</div>

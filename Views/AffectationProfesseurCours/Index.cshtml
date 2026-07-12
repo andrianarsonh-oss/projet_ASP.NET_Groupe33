@@ -1,0 +1,602 @@
+@model IEnumerable<GestionSalleEmploiTemps.Models.AffectationProfesseurCours>
+
+@{
+    ViewData["Title"] = "Affectations Enseignants & Cours";
+}
+
+<style>
+    .aff-page {
+        padding: 1.5rem 0;
+    }
+
+    /* Header */
+    .aff-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+    }
+
+        .aff-header h2 {
+            font-size: 20px;
+            font-weight: 500;
+            color: #1a1a2e;
+            margin: 0;
+        }
+
+    .btn-new-aff {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 18px;
+        background: #534AB7;
+        color: #EEEDFE;
+        border: none;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 500;
+        text-decoration: none;
+        cursor: pointer;
+        transition: background 0.15s;
+    }
+
+        .btn-new-aff:hover {
+            background: #3C3489;
+            color: #EEEDFE;
+            text-decoration: none;
+        }
+
+    /* Stats */
+    .aff-stats {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+        margin-bottom: 1.5rem;
+    }
+
+    .aff-stat {
+        border-radius: 8px;
+        padding: 14px;
+    }
+
+        .aff-stat .stat-label {
+            font-size: 12px;
+            margin-bottom: 4px;
+        }
+
+        .aff-stat .stat-value {
+            font-size: 24px;
+            font-weight: 500;
+        }
+
+    .stat-total {
+        background: #EEEDFE;
+    }
+
+        .stat-total .stat-label {
+            color: #534AB7;
+        }
+
+        .stat-total .stat-value {
+            color: #3C3489;
+        }
+
+    .stat-actif {
+        background: #E1F5EE;
+    }
+
+        .stat-actif .stat-label {
+            color: #0F6E56;
+        }
+
+        .stat-actif .stat-value {
+            color: #085041;
+        }
+
+    .stat-ens {
+        background: #FAECE7;
+    }
+
+        .stat-ens .stat-label {
+            color: #993C1D;
+        }
+
+        .stat-ens .stat-value {
+            color: #712B13;
+        }
+
+    .stat-cours {
+        background: #FBEAF0;
+    }
+
+        .stat-cours .stat-label {
+            color: #993556;
+        }
+
+        .stat-cours .stat-value {
+            color: #72243E;
+        }
+
+    /* Filter card */
+    .aff-filter-card {
+        background: #fff;
+        border: 0.5px solid #e0e0e0;
+        border-top: 3px solid #7F77DD;
+        border-radius: 0 0 12px 12px;
+        padding: 1rem 1.25rem;
+        margin-bottom: 1.5rem;
+    }
+
+        .aff-filter-card .row {
+            align-items: flex-end;
+        }
+
+        .aff-filter-card label {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .aff-filter-card .form-control,
+        .aff-filter-card .form-select {
+            height: 34px;
+            padding: 0 10px;
+            font-size: 13px;
+            border: 0.5px solid #d0d0d0;
+            border-radius: 8px;
+            background: #f8f8f8;
+        }
+
+    .btn-filter-aff {
+        height: 34px;
+        padding: 0 16px;
+        background: #7F77DD;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background 0.15s;
+    }
+
+        .btn-filter-aff:hover {
+            background: #534AB7;
+        }
+
+    /* Table card */
+    .aff-table-card {
+        background: #fff;
+        border: 0.5px solid #e0e0e0;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+        .aff-table-card table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .aff-table-card thead th {
+            padding: 10px 14px;
+            font-size: 11px;
+            font-weight: 500;
+            color: #534AB7;
+            background: #EEEDFE;
+            border-bottom: 0.5px solid #AFA9EC;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            text-align: left;
+        }
+
+            .aff-table-card thead th:last-child {
+                text-align: right;
+            }
+
+        .aff-table-card tbody tr {
+            border-bottom: 0.5px solid #eee;
+            transition: background 0.12s;
+        }
+
+            .aff-table-card tbody tr:last-child {
+                border-bottom: none;
+            }
+
+            .aff-table-card tbody tr:hover {
+                background: #EEEDFE;
+            }
+
+        .aff-table-card tbody td {
+            padding: 11px 14px;
+            font-size: 13px;
+            vertical-align: middle;
+            color: #222;
+        }
+
+        /* Row accent colors */
+        .aff-table-card tbody tr:nth-child(6n+1) {
+            border-left: 3px solid #7F77DD;
+        }
+
+        .aff-table-card tbody tr:nth-child(6n+2) {
+            border-left: 3px solid #1D9E75;
+        }
+
+        .aff-table-card tbody tr:nth-child(6n+3) {
+            border-left: 3px solid #D85A30;
+        }
+
+        .aff-table-card tbody tr:nth-child(6n+4) {
+            border-left: 3px solid #D4537E;
+        }
+
+        .aff-table-card tbody tr:nth-child(6n+5) {
+            border-left: 3px solid #BA7517;
+        }
+
+        .aff-table-card tbody tr:nth-child(6n+0) {
+            border-left: 3px solid #378ADD;
+        }
+
+    /* Code pill */
+    .code-pill {
+        display: inline-block;
+        padding: 3px 9px;
+        background: #EEEDFE;
+        color: #3C3489;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 500;
+    }
+
+    /* Teacher with avatar */
+    .teacher-cell {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .teacher-avatar {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        font-size: 11px;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .aff-table-card tbody tr:nth-child(6n+1) .teacher-avatar {
+        background: #EEEDFE;
+        color: #3C3489;
+    }
+
+    .aff-table-card tbody tr:nth-child(6n+2) .teacher-avatar {
+        background: #E1F5EE;
+        color: #085041;
+    }
+
+    .aff-table-card tbody tr:nth-child(6n+3) .teacher-avatar {
+        background: #FAECE7;
+        color: #712B13;
+    }
+
+    .aff-table-card tbody tr:nth-child(6n+4) .teacher-avatar {
+        background: #FBEAF0;
+        color: #72243E;
+    }
+
+    .aff-table-card tbody tr:nth-child(6n+5) .teacher-avatar {
+        background: #FAEEDA;
+        color: #633806;
+    }
+
+    .aff-table-card tbody tr:nth-child(6n+0) .teacher-avatar {
+        background: #E6F1FB;
+        color: #0C447C;
+    }
+
+    /* Niveau pills */
+    .niveau-pill {
+        display: inline-block;
+        padding: 2px 8px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 500;
+    }
+
+    .niv-L1 {
+        background: #E6F1FB;
+        color: #0C447C;
+    }
+
+    .niv-L2 {
+        background: #EEEDFE;
+        color: #3C3489;
+    }
+
+    .niv-L3 {
+        background: #FBEAF0;
+        color: #72243E;
+    }
+
+    .niv-M1 {
+        background: #FAECE7;
+        color: #712B13;
+    }
+
+    .niv-M2 {
+        background: #EAF3DE;
+        color: #27500A;
+    }
+
+    /* Status badges */
+    .badge-actif {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 3px 10px;
+        background: #E1F5EE;
+        color: #085041;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 500;
+    }
+
+        .badge-actif::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: #1D9E75;
+            border-radius: 50%;
+        }
+
+    .badge-inactif {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 3px 10px;
+        background: #f0f0f0;
+        color: #555;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 500;
+    }
+
+        .badge-inactif::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: #999;
+            border-radius: 50%;
+        }
+
+    /* Action buttons */
+    .aff-actions {
+        display: flex;
+        gap: 5px;
+        justify-content: flex-end;
+    }
+
+    .btn-aff {
+        display: inline-flex;
+        align-items: center;
+        gap: 3px;
+        padding: 4px 10px;
+        border-radius: 7px;
+        font-size: 12px;
+        font-weight: 500;
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+        transition: background 0.12s;
+    }
+
+    .btn-aff-edit {
+        background: #EEEDFE;
+        color: #3C3489;
+    }
+
+        .btn-aff-edit:hover {
+            background: #CECBF6;
+            color: #26215C;
+            text-decoration: none;
+        }
+
+    .btn-aff-detail {
+        background: #E1F5EE;
+        color: #085041;
+    }
+
+        .btn-aff-detail:hover {
+            background: #9FE1CB;
+            color: #04342C;
+            text-decoration: none;
+        }
+
+    .btn-aff-del {
+        background: #FCEBEB;
+        color: #791F1F;
+    }
+
+        .btn-aff-del:hover {
+            background: #F7C1C1;
+            color: #501313;
+            text-decoration: none;
+        }
+
+    /* Empty state */
+    .aff-empty {
+        padding: 2.5rem;
+        text-align: center;
+        color: #888;
+        font-size: 14px;
+    }
+
+    @@media (max-width: 768px) {
+        .aff-stats {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .aff-filter-card .row {
+            flex-direction: column;
+        }
+    }
+</style>
+
+<div class="aff-page container-fluid">
+
+    <div class="aff-header">
+        <h2>Affectations enseignants &amp; cours</h2>
+        <a asp-action="Create" class="btn-new-aff">
+            <i class="bi bi-plus-lg"></i> Nouvelle affectation
+        </a>
+    </div>
+
+    <!-- Stats -->
+    <div class="aff-stats">
+        <div class="aff-stat stat-total">
+            <div class="stat-label">Total affectations</div>
+            <div class="stat-value">@Model.Count()</div>
+        </div>
+        <div class="aff-stat stat-actif">
+            <div class="stat-label">Actives</div>
+            <div class="stat-value">@Model.Count(x => x.Statut == "Actif")</div>
+        </div>
+        <div class="aff-stat stat-ens">
+            <div class="stat-label">Enseignants</div>
+            <div class="stat-value">@Model.Select(x => x.ProfesseurId).Distinct().Count()</div>
+        </div>
+        <div class="aff-stat stat-cours">
+            <div class="stat-label">Cours</div>
+            <div class="stat-value">@Model.Select(x => x.CodeCours).Distinct().Count()</div>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="aff-filter-card">
+        <form asp-action="Index" method="get">
+            <div class="row g-2">
+                <div class="col-md-3">
+                    <label>Recherche</label>
+                    <input type="text" name="recherche" class="form-control"
+                           placeholder="Cours, code, enseignant…" value="@ViewBag.Recherche" />
+                </div>
+                <div class="col-md-2">
+                    <label>Niveau</label>
+                    <select name="niveau" class="form-select">
+                        @foreach (var n in (List<string>)ViewData["NiveauxDisponibles"])
+                        {
+                            <option value="@n" selected="@(ViewBag.Niveau == n)">@n</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label>Classe</label>
+                    <select name="classe" class="form-select">
+                        @foreach (var c in (List<string>)ViewData["ClassesDisponibles"])
+                        {
+                            <option value="@c" selected="@(ViewBag.Classe == c)">@c</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label>Statut</label>
+                    <select name="statut" class="form-select">
+                        <option value="">Tous les statuts</option>
+                        @foreach (var s in (List<string>)ViewData["Statuts"])
+                        {
+                            <option value="@s" selected="@(ViewBag.Statut == s)">@s</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-1 d-flex align-items-end">
+                    <button type="submit" class="btn-filter-aff w-100">Filtrer</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Table -->
+    @if (!Model.Any())
+    {
+        <div class="aff-table-card">
+            <div class="aff-empty">
+                Aucune affectation ne correspond à vos critères de recherche.
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="aff-table-card">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width:90px;">Code</th>
+                        <th>Cours</th>
+                        <th style="width:180px;">Enseignant</th>
+                        <th style="width:100px;">Niveau</th>
+                        <th style="width:100px;">Classe</th>
+                        <th style="width:90px;">Statut</th>
+                        <th style="width:170px;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        var initiales = (item.Professeur?.Prenom?.Substring(0, 1) ?? "") +
+                                        (item.Professeur?.Nom?.Substring(0, 1) ?? "");
+                        var nivClass = item.Niveau switch
+                        {
+                            "Licence 1" => "niv-L1",
+                            "Licence 2" => "niv-L2",
+                            "Licence 3" => "niv-L3",
+                            "Master 1" => "niv-M1",
+                            "Master 2" => "niv-M2",
+                            _ => ""
+                        };
+                        <tr>
+                            <td><span class="code-pill">@item.CodeCours</span></td>
+                            <td style="font-weight:500;">@item.NomCours</td>
+                            <td>
+                                <div class="teacher-cell">
+                                    <div class="teacher-avatar">@initiales.ToUpper()</div>
+                                    <span>@item.Professeur?.Nom.ToUpper() @item.Professeur?.Prenom</span>
+                                </div>
+                            </td>
+                            <td><span class="niveau-pill @nivClass">@item.Niveau</span></td>
+                            <td>@item.Classe</td>
+                            <td>
+                                @if (item.Statut == "Actif")
+                                {
+                                    <span class="badge-actif">Actif</span>
+                                }
+                                else
+                                {
+                                    <span class="badge-inactif">@item.Statut</span>
+                                }
+                            </td>
+                            <td>
+                                <div class="aff-actions">
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn-aff btn-aff-edit">
+                                        <i class="bi bi-pencil"></i> Modifier
+                                    </a>
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn-aff btn-aff-detail">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn-aff btn-aff-del">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+
+</div>

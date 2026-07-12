@@ -1,0 +1,376 @@
+﻿@model GestionSalleEmploiTemps.Models.Professeur
+
+@{
+    ViewData["Title"] = "Modifier le professeur";
+}
+
+<style>
+    /* Structure Globale Entreprise */
+    .details-page {
+        max-width: 1200px;
+        margin: 40px auto;
+        padding: 0 20px;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        color: #1f2937;
+    }
+
+    .enterprise-layout {
+        display: grid;
+        grid-template-columns: 300px 1fr;
+        gap: 24px;
+        align-items: start;
+    }
+
+    /* COLONNE GAUCHE : Sidebar */
+    .profile-sidebar {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 24px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .sidebar-photo-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 20px;
+    }
+
+    .details-photo {
+        width: 110px;
+        height: 110px;
+        border-radius: 8px;
+        object-fit: cover;
+        border: 1px solid #d1d5db;
+        background: #f8fafc;
+    }
+
+    /* Bouton moderne pour charger l'image */
+    .file-upload-btn {
+        font-size: 13px;
+        color: #2563eb;
+        background: #eff6ff;
+        padding: 6px 12px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 500;
+        border: 1px dashed #bfdbfe;
+        transition: all 0.2s;
+        text-align: center;
+        display: inline-block;
+    }
+
+        .file-upload-btn:hover {
+            background: #dbeafe;
+            border-color: #2563eb;
+        }
+
+    .sidebar-info {
+        text-align: center;
+        border-bottom: 1px solid #f3f4f6;
+        padding-bottom: 20px;
+        margin-bottom: 20px;
+    }
+
+        .sidebar-info h2 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #111827;
+            margin: 0 0 4px 0;
+        }
+
+        .sidebar-info .role-label {
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+    /* Style des Inputs et Selects */
+    .form-group-custom {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 4px;
+    }
+
+    .form-label-custom {
+        font-size: 12px;
+        color: #4b5563;
+        font-weight: 600;
+        margin-bottom: 6px;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+    }
+
+    .form-control-custom {
+        width: 100%;
+        padding: 9px 12px;
+        border: 1px solid #d1d5db;
+        border-radius: 6px;
+        font-size: 14px;
+        color: #111827;
+        background-color: #ffffff;
+        transition: border-color 0.15s ease, box-shadow 0.15s ease;
+        box-sizing: border-box;
+        height: 40px;
+    }
+
+        .form-control-custom:focus {
+            border-color: #2563eb;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+        }
+
+    .field-validation-error {
+        font-size: 12px;
+        color: #dc2626;
+        margin-top: 4px;
+        font-weight: 500;
+    }
+
+    /* COLONNE DROITE : Blocs du Formulaire */
+    .main-content-panel {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+    }
+
+    .data-card {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 28px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .section-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: #1e40af;
+        margin: 0 0 20px 0;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #f3f4f6;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .info-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px 24px;
+    }
+
+    .actions-panel {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 16px 28px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .btn-custom {
+        padding: 9px 20px;
+        border-radius: 6px;
+        font-weight: 500;
+        font-size: 14px;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        border: 1px solid transparent;
+        cursor: pointer;
+        transition: background-color 0.15s ease;
+    }
+
+    .btn-back {
+        background-color: #ffffff;
+        color: #374151;
+        border-color: #d1d5db;
+    }
+
+        .btn-back:hover {
+            background-color: #f9fafb;
+        }
+
+    .btn-save {
+        background-color: #2563eb;
+        color: #ffffff;
+        font-weight: 600;
+    }
+
+        .btn-save:hover {
+            background-color: #1d4ed8;
+        }
+
+    @@media(max-width: 900px) {
+        .enterprise-layout {
+            grid-template-columns: 1fr;
+        }
+
+        .info-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<div class="details-page">
+    <form asp-action="Edit" method="post" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="field-validation-error"></div>
+
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="PhotoUrl" />
+
+        <div class="enterprise-layout">
+
+            <aside class="profile-sidebar">
+                <div class="sidebar-photo-wrapper">
+                    @if (!string.IsNullOrEmpty(Model.PhotoUrl))
+                    {
+                        <img src="@Model.PhotoUrl" class="details-photo" alt="Photo" />
+                    }
+                    else
+                    {
+                        <img src="https://ui-avatars.com/api/?name=@Model.Nom+@Model.Prenom&background=2563eb&color=fff&size=120" class="details-photo" alt="Avatar" />
+                    }
+
+                    <label for="photoFile" class="file-upload-btn">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 4px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                        Changer la photo
+                    </label>
+                    <input type="file" id="photoFile" name="photoFile" accept="image/*" style="display: none;" />
+                    <span asp-validation-for="PhotoUrl" class="field-validation-error"></span>
+                </div>
+
+                <div class="sidebar-info">
+                    <h2>@Model.Nom @Model.Prenom</h2>
+                    <span class="role-label">Modification du profil</span>
+                </div>
+
+                <div class="form-group-custom">
+                    <label asp-for="Statut" class="form-label-custom">Statut de l'agent</label>
+                    <select asp-for="Statut" class="form-control-custom">
+                        <option value="Permanent">Permanent</option>
+                        <option value="Vacataire">Vacataire</option>
+                        <option value="Contractuel">Contractuel</option>
+                    </select>
+                    <span asp-validation-for="Statut" class="field-validation-error"></span>
+                </div>
+            </aside>
+
+            <main class="main-content-panel">
+
+                <div class="data-card">
+                    <div class="section-title">Informations personnelles</div>
+                    <div class="info-grid">
+                        <div class="form-group-custom">
+                            <label asp-for="Nom" class="form-label-custom">Nom de famille</label>
+                            <input asp-for="Nom" class="form-control-custom" placeholder="Ex: DUPONT" />
+                            <span asp-validation-for="Nom" class="field-validation-error"></span>
+                        </div>
+                        <div class="form-group-custom">
+                            <label asp-for="Prenom" class="form-label-custom">Prénom</label>
+                            <input asp-for="Prenom" class="form-control-custom" placeholder="Ex: Jean" />
+                            <span asp-validation-for="Prenom" class="field-validation-error"></span>
+                        </div>
+                        <div class="form-group-custom">
+                            <label asp-for="Email" class="form-label-custom">Adresse Email</label>
+                            <input asp-for="Email" type="email" class="form-control-custom" placeholder="j.dupont@institution.com" />
+                            <span asp-validation-for="Email" class="field-validation-error"></span>
+                        </div>
+                        <div class="form-group-custom">
+                            <label asp-for="Telephone" class="form-label-custom">Téléphone professionnel</label>
+                            <input asp-for="Telephone" class="form-control-custom" placeholder="+33 6 00 00 00 00" />
+                            <span asp-validation-for="Telephone" class="field-validation-error"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="data-card">
+                    <div class="section-title">Informations administratives</div>
+                    <div class="info-grid">
+
+                        <div class="form-group-custom">
+                            <label asp-for="MatriculeProfesseur" class="form-label-custom">Numéro de Matricule</label>
+                            <input asp-for="MatriculeProfesseur" class="form-control-custom" placeholder="Ex: PR-2026-04" />
+                            <span asp-validation-for="MatriculeProfesseur" class="field-validation-error"></span>
+                        </div>
+
+                        <div class="form-group-custom">
+                            <label asp-for="Specialite" class="form-label-custom">Spécialité / Discipline</label>
+                            <select asp-for="Specialite" class="form-control-custom">
+                                <option value="">-- Choisir une discipline --</option>
+                                <option value="Génie Logiciel / Informatique">Génie Logiciel / Informatique</option>
+                                <option value="Mathématiques Appliquées">Mathématiques Appliquées</option>
+                                <option value="Data Science & IA">Data Science & IA</option>
+                                <option value="Physique & Électronique">Physique & Électronique</option>
+                                <option value="Sciences de Gestion & Management">Sciences de Gestion & Management</option>
+                                <option value="Réseaux & Cybersécurité">Réseaux & Cybersécurité</option>
+                                <option value="Langues & Communication">Langues & Communication</option>
+                            </select>
+                            <span asp-validation-for="Specialite" class="field-validation-error"></span>
+                        </div>
+
+                        <div class="form-group-custom">
+                            <label asp-for="Grade" class="form-label-custom">Grade</label>
+                            <select asp-for="Grade" class="form-control-custom">
+                                <option value="">-- Sélectionner le grade --</option>
+                                <option value="Professeur des Universités">Professeur des Universités</option>
+                                <option value="Maître de Conférences">Maître de Conférences</option>
+                                <option value="Enseignant-Chercheur">Enseignant-Chercheur</option>
+                                <option value="Professeur Agrégé (PRAG)">Professeur Agrégé (PRAG)</option>
+                                <option value="Assistant / Doctorant">Assistant / Doctorant</option>
+                            </select>
+                            <span asp-validation-for="Grade" class="field-validation-error"></span>
+                        </div>
+
+                        <div class="form-group-custom">
+                            <label asp-for="Diplome" class="form-label-custom">Diplôme le plus élevé</label>
+                            <select asp-for="Diplome" class="form-control-custom">
+                                <option value="">-- Niveau de diplôme --</option>
+                                <option value="Doctorat / Ph.D.">Doctorat / Ph.D.</option>
+                                <option value="Habilitation (HDR)">Habilitation à Diriger des Recherches (HDR)</option>
+                                <option value="Master / Diplôme d'Ingénieur">Master / Diplôme d'Ingénieur</option>
+                                <option value="Agrégation">Agrégation</option>
+                            </select>
+                            <span asp-validation-for="Diplome" class="field-validation-error"></span>
+                        </div>
+
+                        <div class="form-group-custom">
+                            <label asp-for="Departement" class="form-label-custom">Département d'affectation</label>
+                            <select asp-for="Departement" class="form-control-custom">
+                                <option value="">-- Assigner à un département --</option>
+                                <option value="Informatique & Technologies">Informatique & Technologies</option>
+                                <option value="Sciences Exactes & Fondamentales">Sciences Exactes & Fondamentales</option>
+                                <option value="Sciences Économiques & Gestion">Sciences Économiques & Gestion</option>
+                                <option value="Génie Industriel & Robotique">Génie Industriel & Robotique</option>
+                                <option value="Humanités & Langues">Humanités & Langues</option>
+                            </select>
+                            <span asp-validation-for="Departement" class="field-validation-error"></span>
+                        </div>
+
+                        <div class="form-group-custom">
+                            <label asp-for="DateEmbauche" class="form-label-custom">Date d'embauche</label>
+                            <input asp-for="DateEmbauche" type="date" class="form-control-custom" />
+                            <span asp-validation-for="DateEmbauche" class="field-validation-error"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="actions-panel">
+                    <a asp-action="Index" class="btn-custom btn-back">
+                        Annuler
+                    </a>
+
+                    <button type="submit" class="btn-custom btn-save">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+                        Enregistrer les modifications
+                    </button>
+                </div>
+
+            </main>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,213 @@
+﻿/* ========================================
+   GLOBAL
+======================================== */
+
+body {
+    background: #f4f6f9;
+    font-family: 'Poppins', sans-serif;
+    min-height: 100vh;
+    color: #2c3e50;
+}
+
+/* ========================================
+   NAVBAR PREMIUM
+======================================== */
+
+.premium-navbar {
+    background: linear-gradient(135deg, #085041, #1D9E75);
+    box-shadow: 0 5px 20px rgba(0,0,0,.15);
+    padding: 12px 25px;
+}
+
+.navbar-brand {
+    color: white !important;
+    font-weight: 700;
+    font-size: 20px;
+}
+
+.brand-icon {
+    width: 45px;
+    height: 45px;
+    background: rgba(255,255,255,.15);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+    font-size: 22px;
+}
+
+.brand-subtitle {
+    font-size: 11px;
+    opacity: .8;
+    display: block;
+    font-weight: 300;
+}
+
+.premium-navbar .nav-link {
+    color: rgba(255,255,255,.90) !important;
+    font-weight: 500;
+    margin-left: 6px;
+    padding: 10px 16px !important;
+    border-radius: 30px;
+    transition: all .3s ease;
+}
+
+    .premium-navbar .nav-link:hover {
+        background: rgba(255,255,255,.15);
+        color: white !important;
+        transform: translateY(-2px);
+    }
+
+    .premium-navbar .nav-link.active {
+        background: rgba(255,255,255,.18);
+        color: white !important;
+    }
+
+.navbar-toggler {
+    border: none;
+}
+
+    .navbar-toggler:focus {
+        box-shadow: none;
+    }
+
+/* ========================================
+   CONTENU
+======================================== */
+
+.main-container {
+    padding: 30px;
+    min-height: calc(100vh - 140px);
+}
+
+/* ========================================
+   CARDS
+======================================== */
+
+.card {
+    border: none;
+    border-radius: 18px;
+    box-shadow: 0 8px 25px rgba(0,0,0,.05);
+}
+
+.card-header {
+    border-radius: 18px 18px 0 0 !important;
+}
+
+/* ========================================
+   TABLES
+======================================== */
+
+.table {
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+    .table thead {
+        background: #0F6E56;
+        color: white;
+    }
+
+    .table th {
+        font-weight: 600;
+        border: none;
+    }
+
+.table-hover tbody tr:hover {
+    background-color: #f8fafc;
+}
+
+/* ========================================
+   BOUTONS
+======================================== */
+
+.btn {
+    border-radius: 12px;
+    font-weight: 500;
+}
+
+.btn-primary {
+    background: #1D9E75;
+    border-color: #1D9E75;
+}
+
+    .btn-primary:hover {
+        background: #14785a;
+        border-color: #14785a;
+    }
+
+.btn-success {
+    background: #1D9E75;
+    border-color: #1D9E75;
+}
+
+.btn-warning {
+    color: white;
+}
+
+.btn-danger {
+    background: #dc3545;
+}
+
+/* ========================================
+   FORMULAIRES
+======================================== */
+
+.form-control,
+.form-select {
+    border-radius: 12px;
+    padding: 10px 14px;
+}
+
+    .form-control:focus,
+    .form-select:focus {
+        border-color: #1D9E75;
+        box-shadow: 0 0 0 .2rem rgba(29,158,117,.15);
+    }
+
+/* ========================================
+   ALERTES
+======================================== */
+
+.alert {
+    border-radius: 15px;
+    border: none;
+}
+
+/* ========================================
+   FOOTER
+======================================== */
+
+footer {
+    background: white;
+    border-top: 1px solid #e5e5e5;
+    padding: 15px;
+    text-align: center;
+    color: #666;
+    font-size: 14px;
+}
+
+/* ========================================
+   RESPONSIVE
+======================================== */
+
+@media (max-width: 768px) {
+
+    .main-container {
+        padding: 15px;
+    }
+
+    .premium-navbar {
+        padding: 10px;
+    }
+
+    .navbar-brand {
+        font-size: 17px;
+    }
+
+    .brand-icon {
+        width: 40px;
+        height: 40px;
+    }
+}

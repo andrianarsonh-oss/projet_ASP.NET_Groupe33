@@ -1,0 +1,411 @@
+﻿@model IEnumerable<GestionSalleEmploiTemps.Models.Professeur>
+
+@{
+    ViewData["Title"] = "Liste des Professeurs";
+}
+
+<style>
+    .page-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1.5rem;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
+        .page-header h1 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 26px;
+            font-weight: 400;
+            margin: 0 0 4px;
+            letter-spacing: -0.2px;
+            color: #2c2c2a;
+        }
+
+        .page-header p {
+            font-size: 13px;
+            color: #888780;
+            margin: 0;
+        }
+
+    .btn-add {
+        background: #1D9E75;
+        color: #fff !important;
+        border: none;
+        border-radius: 20px;
+        padding: 8px 20px;
+        font-size: 14px;
+        font-weight: 500;
+        text-decoration: none;
+        white-space: nowrap;
+    }
+
+        .btn-add:hover {
+            background: #0F6E56;
+        }
+
+    .stats-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 12px;
+        margin-bottom: 1.5rem;
+    }
+
+    .stat-card {
+        background: #ffffff;
+        border-radius: 12px;
+        border: 0.5px solid rgba(0,0,0,0.08);
+        padding: 1.1rem 1.25rem;
+        text-align: center;
+    }
+
+        .stat-card h3 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 28px;
+            font-weight: 400;
+            color: #1D9E75;
+            margin: 0 0 4px;
+        }
+
+        .stat-card p {
+            font-size: 12px;
+            color: #888780;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin: 0;
+        }
+
+    .search-card {
+        background: #ffffff;
+        border-radius: 14px;
+        border: 0.5px solid rgba(0,0,0,0.08);
+        padding: 1.25rem 1.5rem;
+        margin-bottom: 1.5rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+    }
+
+        .search-card .form-control {
+            border-radius: 20px;
+            border: 0.5px solid rgba(0,0,0,0.15);
+            font-size: 13px;
+            padding: 7px 14px;
+            color: #2c2c2a;
+            background: #f5f5f2;
+            flex: 1;
+            min-width: 150px;
+        }
+
+    .btn-search {
+        background: #1D9E75;
+        color: #fff;
+        border: none;
+        border-radius: 20px;
+        padding: 7px 20px;
+        font-size: 13px;
+        font-weight: 500;
+        white-space: nowrap;
+    }
+
+    .btn-reset {
+        background: transparent;
+        color: #888780;
+        border: 0.5px solid rgba(0,0,0,0.15);
+        border-radius: 20px;
+        padding: 7px 18px;
+        font-size: 13px;
+        text-decoration: none;
+        white-space: nowrap;
+    }
+
+    .table-card {
+        background: #ffffff;
+        border-radius: 14px;
+        border: 0.5px solid rgba(0,0,0,0.08);
+        overflow: hidden;
+    }
+
+        .table-card .table {
+            margin: 0;
+            font-size: 13px;
+        }
+
+        .table-card thead th {
+            background: #f5f5f2;
+            border-bottom: 0.5px solid rgba(0,0,0,0.08);
+            font-size: 11px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            color: #888780;
+            padding: 12px 16px;
+            white-space: nowrap;
+        }
+
+        .table-card tbody td {
+            padding: 13px 16px;
+            border-bottom: 0.5px solid rgba(0,0,0,0.05);
+            vertical-align: middle;
+            color: #2c2c2a;
+        }
+
+    .prof-name {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 500;
+    }
+
+    .avatar-initials,
+    .prof-photo {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        flex-shrink: 0;
+    }
+
+    .avatar-initials {
+        background: #E1F5EE;
+        color: #0F6E56;
+        font-size: 12px;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        text-transform: uppercase;
+    }
+
+    .prof-photo {
+        object-fit: cover;
+        border: 2px solid #E1F5EE;
+        box-shadow: 0 3px 8px rgba(0,0,0,.10);
+    }
+
+    .badge-permanent {
+        background: #E1F5EE;
+        color: #0F6E56;
+    }
+
+    .badge-vacataire {
+        background: #FAEEDA;
+        color: #854F0B;
+    }
+
+    .badge-autre {
+        background: #F1EFE8;
+        color: #5F5E5A;
+    }
+
+    .badge-status {
+        font-size: 11px;
+        padding: 3px 10px;
+        border-radius: 20px;
+        font-weight: 500;
+        display: inline-block;
+    }
+
+    .btn-action {
+        font-size: 12px;
+        padding: 4px 12px;
+        border-radius: 20px;
+        border: 0.5px solid rgba(0,0,0,0.12);
+        text-decoration: none;
+        display: inline-block;
+        margin-right: 4px;
+        margin-bottom: 2px;
+        white-space: nowrap;
+    }
+
+    .btn-edit {
+        color: #854F0B;
+        background: #FAEEDA;
+    }
+
+    .btn-details {
+        color: #185FA5;
+        background: #E6F1FB;
+    }
+
+    .btn-delete {
+        color: #A32D2D;
+        background: #FCEBEB;
+    }
+
+    .matricule-badge {
+        font-size: 11px;
+        font-family: monospace;
+        background: #f1efeb;
+        color: #5F5E5A;
+        padding: 3px 8px;
+        border-radius: 6px;
+    }
+
+    @@media (max-width: 768px) {
+        .table-card {
+            overflow-x: auto;
+        }
+    }
+</style>
+
+<div class="page-header">
+    <div>
+        <h1>Gestion des Professeurs</h1>
+        <p>Recherche, consultation et gestion des informations professionnelles.</p>
+    </div>
+
+    <a asp-action="Create" class="btn-add">+ Ajouter un Professeur</a>
+</div>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Success"]
+    </div>
+}
+
+<div class="stats-container">
+    <div class="stat-card">
+        <h3>@Model.Count()</h3>
+        <p>Total</p>
+    </div>
+
+    <div class="stat-card">
+        <h3>@Model.Count(p => p.Statut == "Permanent")</h3>
+        <p>Permanents</p>
+    </div>
+
+    <div class="stat-card">
+        <h3>@Model.Count(p => p.Statut == "Vacataire")</h3>
+        <p>Vacataires</p>
+    </div>
+
+    <div class="stat-card">
+        <h3>@Model.Count(p => p.Statut == "Contractuel")</h3>
+        <p>Contractuels</p>
+    </div>
+</div>
+
+<form method="get" class="search-card">
+    <input type="text"
+           name="recherche"
+           value="@ViewBag.Recherche"
+           class="form-control"
+           placeholder="Nom, prénom, email, matricule..." />
+
+    <input type="text"
+           name="specialite"
+           value="@ViewBag.Specialite"
+           class="form-control"
+           placeholder="Spécialité" />
+
+    <input type="text"
+           name="departement"
+           value="@ViewBag.Departement"
+           class="form-control"
+           placeholder="Département" />
+
+    <select name="statut" class="form-control">
+        <option value="">Tous statuts</option>
+        <option value="Permanent" selected="@(ViewBag.Statut == "Permanent")">Permanent</option>
+        <option value="Vacataire" selected="@(ViewBag.Statut == "Vacataire")">Vacataire</option>
+        <option value="Contractuel" selected="@(ViewBag.Statut == "Contractuel")">Contractuel</option>
+    </select>
+
+    <button type="submit" class="btn-search">🔍 Rechercher</button>
+    <a asp-action="Index" class="btn-reset">Réinitialiser</a>
+</form>
+
+<div class="table-card">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Matricule</th>
+                <th>Nom complet</th>
+                <th>Email</th>
+                <th>Téléphone</th>
+                <th>Spécialité</th>
+                <th>Département</th>
+                <th>Statut</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody id="profTable">
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <span class="matricule-badge">
+                            @item.MatriculeProfesseur
+                        </span>
+                    </td>
+
+                    <td>
+                        <div class="prof-name">
+                            @if (!string.IsNullOrEmpty(item.PhotoUrl))
+                            {
+                                <img src="@item.PhotoUrl"
+                                     class="prof-photo"
+                                     alt="Photo de @item.Nom @item.Prenom" />
+                            }
+                            else
+                            {
+                                <span class="avatar-initials">
+                                    @(item.Nom?.Length > 0 ? item.Nom[0].ToString() : "")
+                                    @(item.Prenom?.Length > 0 ? item.Prenom[0].ToString() : "")
+                                </span>
+                            }
+
+                            <span>
+                                @item.Nom @item.Prenom
+                            </span>
+                        </div>
+                    </td>
+
+                    <td>@item.Email</td>
+                    <td>@item.Telephone</td>
+                    <td>@item.Specialite</td>
+                    <td>@item.Departement</td>
+
+                    <td>
+                        @if (item.Statut == "Permanent")
+                        {
+                            <span class="badge-status badge-permanent">Permanent</span>
+                        }
+                        else if (item.Statut == "Vacataire")
+                        {
+                            <span class="badge-status badge-vacataire">Vacataire</span>
+                        }
+                        else
+                        {
+                            <span class="badge-status badge-autre">@item.Statut</span>
+                        }
+                    </td>
+
+                    <td>
+                        <a asp-action="Edit"
+                           asp-route-id="@item.Id"
+                           class="btn-action btn-edit">
+                            ✏️ Modifier
+                        </a>
+
+                        <a asp-action="Details"
+                           asp-route-id="@item.Id"
+                           class="btn-action btn-details">
+                            👁 Détails
+                        </a>
+
+                        <a asp-action="Delete"
+                           asp-route-id="@item.Id"
+                           class="btn-action btn-delete">
+                            🗑 Supprimer
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,242 @@
+@model GestionSalleEmploiTemps.Models.DisponibiliteProfesseur
+
+@{
+    ViewData["Title"] = "Modifier la disponibilité";
+}
+
+<style>
+    /* Structure Globale Entreprise */
+    .form-page {
+        max-width: 800px;
+        margin: 40px auto;
+        padding: 0 20px;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        color: #1f2937;
+    }
+
+    .form-container {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 28px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .form-header {
+        border-bottom: 1px solid #f3f4f6;
+        padding-bottom: 16px;
+        margin-bottom: 24px;
+    }
+
+        .form-header h2 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #111827;
+            margin: 0;
+        }
+
+        .form-header p {
+            font-size: 14px;
+            color: #6b7280;
+            margin: 4px 0 0 0;
+        }
+
+    /* Style des Inputs, Selects et Labels */
+    .form-group-custom {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 20px;
+    }
+
+    .form-label-custom {
+        font-size: 12px;
+        color: #4b5563;
+        font-weight: 600;
+        margin-bottom: 6px;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+    }
+
+    .form-control-custom {
+        width: 100%;
+        padding: 9px 12px;
+        border: 1px solid #d1d5db;
+        border-radius: 6px;
+        font-size: 14px;
+        color: #111827;
+        background-color: #ffffff;
+        transition: border-color 0.15s ease, box-shadow 0.15s ease;
+        box-sizing: border-box;
+        height: 40px;
+    }
+
+        .form-control-custom:focus {
+            border-color: #2563eb;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+        }
+
+    /* Grid pour les heures */
+    .time-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+
+    /* Gestion des erreurs */
+    .validation-summary-custom {
+        background-color: #fef2f2;
+        border: 1px solid #fca5a5;
+        border-radius: 6px;
+        padding: 12px 16px;
+        margin-bottom: 20px;
+        color: #b91c1c;
+        font-size: 14px;
+    }
+
+        .validation-summary-custom ul {
+            margin: 4px 0 0 0;
+            padding-left: 20px;
+        }
+
+    .field-validation-error {
+        font-size: 12px;
+        color: #dc2626;
+        margin-top: 4px;
+        font-weight: 500;
+    }
+
+    /* Barre d'actions */
+    .actions-panel {
+        border-top: 1px solid #f3f4f6;
+        padding-top: 20px;
+        margin-top: 8px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .btn-custom {
+        padding: 9px 20px;
+        border-radius: 6px;
+        font-weight: 500;
+        font-size: 14px;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        border: 1px solid transparent;
+        cursor: pointer;
+        transition: background-color 0.15s ease;
+    }
+
+    .btn-back {
+        background-color: #ffffff;
+        color: #374151;
+        border-color: #d1d5db;
+    }
+
+        .btn-back:hover {
+            background-color: #f9fafb;
+        }
+
+    .btn-save {
+        background-color: #2563eb;
+        color: #ffffff;
+        font-weight: 600;
+    }
+
+        .btn-save:hover {
+            background-color: #1d4ed8;
+        }
+
+    @@media(max-width: 600px) {
+        .time-grid {
+            grid-template-columns: 1fr;
+            gap: 0;
+        }
+    }
+</style>
+
+<div class="form-page">
+    <div class="form-container">
+
+        <div class="form-header">
+            <h2>Modifier la Disponibilité</h2>
+            <p>Ajuster les paramètres, les horaires ou le statut du créneau sélectionné.</p>
+        </div>
+
+        <form asp-action="Edit" method="post">
+
+            @if (!ViewData.ModelState.IsValid && ViewData.ModelState[string.Empty]?.Errors.Count > 0)
+            {
+                <div class="validation-summary-custom">
+                    <strong>Veuillez corriger l'erreur suivante :</strong>
+                    <div asp-validation-summary="ModelOnly"></div>
+                </div>
+            }
+
+            <input type="hidden" asp-for="Id" />
+
+            <div class="form-group-custom">
+                <label asp-for="ProfesseurId" class="form-label-custom">Enseignant associé</label>
+                <select asp-for="ProfesseurId" class="form-control-custom" asp-items="ViewBag.ProfesseurId"></select>
+                <span asp-validation-for="ProfesseurId" class="field-validation-error"></span>
+            </div>
+
+            <div class="form-group-custom">
+                <label asp-for="Jour" class="form-label-custom">Jour de la semaine</label>
+                <select asp-for="Jour" class="form-control-custom">
+                    @foreach (var jour in ViewBag.Jours)
+                    {
+                        <!option value="@jour" @(Model.Jour == jour ? "selected" : "")>@jour</!option>
+                    }
+                </select>
+                <span asp-validation-for="Jour" class="field-validation-error"></span>
+            </div>
+
+            <div class="time-grid">
+                <div class="form-group-custom">
+                    <label asp-for="HeureDebut" class="form-label-custom">Heure de début</label>
+                    <input asp-for="HeureDebut" type="time" class="form-control-custom" />
+                    <span asp-validation-for="HeureDebut" class="field-validation-error"></span>
+                </div>
+
+                <div class="form-group-custom">
+                    <label asp-for="HeureFin" class="form-label-custom">Heure de fin</label>
+                    <input asp-for="HeureFin" type="time" class="form-control-custom" />
+                    <span asp-validation-for="HeureFin" class="field-validation-error"></span>
+                </div>
+            </div>
+
+            <div class="form-group-custom">
+                <label asp-for="Statut" class="form-label-custom">Statut sur ce créneau</label>
+                <select asp-for="Statut" class="form-control-custom">
+                    @foreach (var statut in ViewBag.Statuts)
+                    {
+                        <!option value="@statut" @(Model.Statut == statut ? "selected" : "")>@statut</!option>
+                    }
+                </select>
+                <span asp-validation-for="Statut" class="field-validation-error"></span>
+            </div>
+
+            <div class="actions-panel">
+                <a asp-action="Index" class="btn-custom btn-back">
+                    Annuler
+                </a>
+
+                <button type="submit" class="btn-custom btn-save">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+                    Enregistrer les modifications
+                </button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
