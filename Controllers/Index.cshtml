@@ -1,0 +1,42 @@
+﻿@model List<EMIT_EDT.Models.Mention>
+@{
+    ViewData["Title"] = "Mentions";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="fas fa-graduation-cap"></i> Mentions</h2>
+    <a asp-action="Create" class="btn btn-primary"><i class="fas fa-plus"></i> Ajouter une mention</a>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <table class="table table-striped table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>Code</th>
+                    <th>Nom</th>
+                    <th>Description</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var mention in Model)
+                {
+                    <tr>
+                        <td><strong>@mention.Code</strong></td>
+                        <td>@mention.Nom</td>
+                        <td>@mention.Description</td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@mention.MentionId" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
+                            <a asp-action="Delete" asp-route-id="@mention.MentionId" class="btn btn-sm btn-danger" onclick="return confirm('Supprimer cette mention ?')"><i class="fas fa-trash"></i></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        @if (!Model.Any())
+        {
+            <p class="text-center text-muted">Aucune mention enregistrée.</p>
+        }
+    </div>
+</div>
