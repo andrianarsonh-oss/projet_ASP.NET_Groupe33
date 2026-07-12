@@ -1,4 +1,4 @@
-namespace GestionSalleEmploiTemps.Models
+namespace EMIT_EDT.Models
 {
     public class ErrorViewModel
     {
