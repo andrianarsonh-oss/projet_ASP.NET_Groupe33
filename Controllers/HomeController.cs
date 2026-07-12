@@ -1,11 +1,18 @@
-using GestionSalleEmploiTemps.Models;
-using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using EMIT_EDT.Models;
+using Microsoft.AspNetCore.Mvc;
 
-namespace GestionSalleEmploiTemps.Controllers
+namespace EMIT_EDT.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly ILogger<HomeController> _logger;
+
+        public HomeController(ILogger<HomeController> logger)
+        {
+            _logger = logger;
+        }
+
         public IActionResult Index()
         {
             return View();
