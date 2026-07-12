@@ -1,148 +1,114 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;  // ← ZAVA-DEHIBE
 using Microsoft.EntityFrameworkCore;
-using GestionEmploiTemps.Data;
-using GestionEmploiTemps.Models;
-using Microsoft.AspNetCore.Mvc.Rendering;
+using EMIT_EDT.Data;
+using EMIT_EDT.Models;
+using EMIT_EDT.Services;
+using Microsoft.AspNetCore.Authorization;
 
-namespace GestionEmploiTemps.Controllers
+namespace EMIT_EDT.Controllers
 {
+    [Authorize]
     public class EmploiDuTempsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly ConflitService _conflitService;
 
-        public EmploiDuTempsController(ApplicationDbContext context)
+        public EmploiDuTempsController(ApplicationDbContext context, ConflitService conflitService)
         {
             _context = context;
+            _conflitService = conflitService;
         }
 
-        // LISTE
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? parcoursId)
         {
-            var emplois = await _context.EmploiDuTemps
-                .Include(e => e.Matiere)
-                .Include(e => e.Professeur)
-                .Include(e => e.Salle)
-                .ToListAsync();
+            ViewBag.Parcours = await _context.Parcours.Include(p => p.Mention).ToListAsync();
+            ViewBag.Creneaux = await _context.CreneauHoraires.OrderBy(c => c.HeureDebut).ToListAsync();
 
-            return View(emplois);
+            var seances = _context.Seances
+                .Include(s => s.MatiereUE)
+                .Include(s => s.Enseignant).ThenInclude(e => e!.Utilisateur)
+                .Include(s => s.Salle).ThenInclude(s => s!.Batiment)
+                .Include(s => s.CreneauHoraire)
+                .Include(s => s.Promotion).ThenInclude(p => p!.Parcours)
+                .Include(s => s.Groupe)
+                .Where(s => s.Statut == "Actif");
+
+            if (parcoursId.HasValue)
+                seances = seances.Where(s => s.Promotion!.ParcoursId == parcoursId.Value);
+
+            return View(await seances.OrderBy(s => s.JourSemaine).ThenBy(s => s.CreneauHoraire!.HeureDebut).ToListAsync());
         }
 
-        // FORMULAIRE CREATE
-        public IActionResult Create()
+        [Authorize(Roles = "SuperAdmin,RespEDT")]
+        public async Task<IActionResult> Create()
         {
-            ViewBag.Matieres = new SelectList(_context.Matieres, "Id", "NomMatiere");
-
-            ViewBag.Professeurs = new SelectList(_context.Professeurs, "Id", "Nom");
-
-            ViewBag.Salles = new SelectList(_context.Salles, "Id", "NomSalle");
-
-            ViewBag.Jours = new SelectList(new[] { "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche" });
-
-            return View();
+            await RemplirListes();
+            return View(new Seance());
         }
 
-        // ENREGISTREMENT CREATE
         [HttpPost]
-        public async Task<IActionResult> Create(EmploiDuTemps emploi)
+        [Authorize(Roles = "SuperAdmin,RespEDT")]
+        public async Task<IActionResult> Create(Seance seance)
         {
-            if (!ModelState.IsValid)
+            var conflit = await _conflitService.VerifierConflits(seance);
+            if (conflit.AConflit && conflit.EstBloquant)
             {
-                ViewBag.Matieres = new SelectList(_context.Matieres, "Id", "NomMatiere");
-                ViewBag.Professeurs = new SelectList(_context.Professeurs, "Id", "Nom");
-                ViewBag.Salles = new SelectList(_context.Salles, "Id", "NomSalle");
-                ViewBag.Jours = new SelectList(new[] { "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche" });
-                return View(emploi);
+                foreach (var msg in conflit.Messages)
+                    ModelState.AddModelError("", msg);
+
+                await RemplirListes();
+                return View(seance);
             }
 
-            bool conflit = _context.EmploiDuTemps.Any(e =>
-                e.Jour == emploi.Jour &&
-
-                (
-                    e.ProfesseurId == emploi.ProfesseurId ||
-                    e.SalleId == emploi.SalleId
-                ) &&
-
-                (
-                    emploi.HeureDebut < e.HeureFin &&
-                    emploi.HeureFin > e.HeureDebut
-                )
-            );
-
-            // Vérification conflits pour le groupe d'étudiants si renseigné
-            if (!string.IsNullOrWhiteSpace(emploi.Groupe))
-            {
-                bool conflitEtudiants = _context.EmploiDuTemps.Any(e =>
-                    e.Jour == emploi.Jour &&
-                    e.Groupe == emploi.Groupe &&
-                    (emploi.HeureDebut < e.HeureFin && emploi.HeureFin > e.HeureDebut)
-                );
-
-                if (conflitEtudiants)
-                {
-                    conflit = true;
-                }
-            }
-
-            if (conflit)
-            {
-                ModelState.AddModelError("", "Conflit détecté : professeur ou salle déjà occupé.");
-
-                ViewBag.Matieres = new SelectList(_context.Matieres, "Id", "NomMatiere");
-                ViewBag.Professeurs = new SelectList(_context.Professeurs, "Id", "Nom");
-                ViewBag.Salles = new SelectList(_context.Salles, "Id", "NomSalle");
-
-                return View(emploi);
-            }
-
-            _context.EmploiDuTemps.Add(emploi);
+            seance.DateCreation = DateTime.Now;
+            _context.Seances.Add(seance);
             await _context.SaveChangesAsync();
-
+            TempData["Success"] = "Séance créée avec succès !";
             return RedirectToAction(nameof(Index));
         }
 
-        // Vue calendrier
-        public IActionResult Calendar()
+        private async Task RemplirListes()
         {
-            return View();
-        }
+            // Mentions et Parcours (si utiles plus tard)
+            ViewBag.Mentions = await _context.Mentions.ToListAsync();
+            ViewBag.Parcours = await _context.Parcours.ToListAsync();
 
-        // Fournit les événements pour FullCalendar
-        [HttpGet]
-        public async Task<JsonResult> Events(int? semaine)
-        {
-            var emplois = await _context.EmploiDuTemps
-                .Include(e => e.Matiere)
-                .Include(e => e.Professeur)
-                .Include(e => e.Salle)
-                .ToListAsync();
+            // Matières : SelectList (Value = MatiereUEId, Text = Nom)
+            var matieres = await _context.MatiereUEs.ToListAsync();
+            ViewBag.Matieres = new SelectList(matieres, "MatiereUEId", "Nom");
 
-            int diff = (7 + ((int)DateTime.Today.DayOfWeek - (int)DayOfWeek.Monday)) % 7;
-            DateTime monday = DateTime.Today.AddDays(-diff);
-
-            var dayMap = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
-            {
-                { "lundi", 0 }, { "mardi", 1 }, { "mercredi", 2 }, { "jeudi", 3 }, { "vendredi", 4 }, { "samedi", 5 }, { "dimanche", 6 }
-            };
-
-            var list = emplois.Select(e =>
-            {
-                var jourKey = e.Jour ?? string.Empty;
-                int dayOffset = dayMap.ContainsKey(jourKey) ? dayMap[jourKey] : 0;
-                DateTime date = monday.AddDays(dayOffset + (e.Semaine > 0 ? (e.Semaine - 1) * 7 : 0));
-                var start = date.Add(e.HeureDebut);
-                var end = date.Add(e.HeureFin);
-
-                return new
+            // Enseignants : SelectList avec nom complet
+            var enseignants = await _context.Enseignants
+                .Include(e => e.Utilisateur)
+                .Select(e => new
                 {
-                    id = e.Id,
-                    title = (e.Matiere?.NomMatiere ?? "") + " - " + (e.Professeur?.Nom ?? ""),
-                    start = start.ToString("s"),
-                    end = end.ToString("s"),
-                    extendedProps = new { salle = e.Salle?.NomSalle, groupe = e.Groupe }
-                };
+                    e.EnseignantId,
+                    NomComplet = e.Utilisateur != null ? $"{e.Utilisateur.Nom} {e.Utilisateur.Prenom}" : "Inconnu"
+                })
+                .ToListAsync();
+            ViewBag.Enseignants = new SelectList(enseignants, "EnseignantId", "NomComplet");
+
+            // Promotions
+            var promotions = await _context.Promotions.ToListAsync();
+            ViewBag.Promotions = new SelectList(promotions, "PromotionId", "Code");
+
+            // Créneaux horaires (format HH:mm - HH:mm)
+            var creneaux = await _context.CreneauHoraires.OrderBy(c => c.HeureDebut).ToListAsync();
+            ViewBag.Creneaux = creneaux.Select(c => new SelectListItem
+            {
+                Value = c.CreneauHoraireId.ToString(),
+                Text = $"{c.HeureDebut:hh\\:mm} - {c.HeureFin:hh\\:mm}"
             }).ToList();
 
-            return Json(list);
+            // Salles actives
+            var salles = await _context.Salles.Include(s => s.Batiment)
+                .Where(s => s.Statut == "Active").ToListAsync();
+            ViewBag.Salles = new SelectList(salles, "SalleId", "Code");
+
+            // Semestres actifs
+            var semestres = await _context.Semestres.Where(s => s.Actif).ToListAsync();
+            ViewBag.Semestres = new SelectList(semestres, "SemestreId", "Libelle");
         }
     }
 }
